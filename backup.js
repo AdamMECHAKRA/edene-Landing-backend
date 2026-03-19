@@ -9,7 +9,7 @@ const fs   = require('fs');
 
 process.chdir(path.join(__dirname, '..'));
 
-const { db, DB_PATH, getInscrits } = require('../src/database');
+const { db, DB_PATH, getInscrits } = require('./database');
 
 const BACKUP_DIR = path.join(__dirname, '..', 'data', 'backups');
 if (!fs.existsSync(BACKUP_DIR)) fs.mkdirSync(BACKUP_DIR, { recursive: true });
