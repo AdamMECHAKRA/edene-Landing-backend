@@ -50,7 +50,7 @@ app.use(cors({ origin: '*', methods: ['GET','POST','PUT','PATCH','DELETE'] }));
 app.use(helmet({ contentSecurityPolicy: false }));
 app.use(morgan('dev'));
 app.use(express.json({ limit: '1mb' }));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname)));
 
 // Rate limiting sur l'inscription
 try {
@@ -410,7 +410,7 @@ app.post('/api/dev/seed', (req, res) => {
 // SPA FALLBACK — Dashboard admin
 // ─────────────────────────────────────────────────
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 // ─────────────────────────────────────────────────
