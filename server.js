@@ -36,9 +36,9 @@ const morgan      = require('morgan');
 const path        = require('path');
 const { v4: uuidv4 } = require('uuid');
 
-const { db, queries, createInscrit, getInscrits, getStats, DB_PATH } = require('./src/database');
-const { sendConfirmation, sendEmail, templateConfirmation, templateWelcomePro } = require('./src/email');
-const { validateInscription, validateStatusUpdate, SPECIALITES_PRO, CENTRES_INTERET } = require('./src/validation');
+const { db, queries, createInscrit, getInscrits, getStats, DB_PATH } = require('./database');
+const { sendConfirmation, sendEmail, templateConfirmation, templateWelcomePro } = require('./email');
+const { validateInscription, validateStatusUpdate, SPECIALITES_PRO, CENTRES_INTERET } = require('./validation');
 
 // ─────────────────────────────────────────────────
 // APP SETUP
