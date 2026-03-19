@@ -6,7 +6,7 @@
 const path = require('path');
 process.chdir(path.join(__dirname, '..'));
 
-const { createInscrit, queries } = require('../src/database');
+const { createInscrit, queries } = require('./database');
 const { v4: uuidv4 } = require('uuid');
 
 const NOMS = ['Martin','Diallo','Koné','Mbaye','Touré','Bah','Coulibaly','N\'Guessan','Traoré','Camara','Sow','Diop','Fall','Ndiaye','Ouédraogo'];
