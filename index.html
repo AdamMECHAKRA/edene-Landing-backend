@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html class="light" lang="fr"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
@@ -14,81 +13,68 @@
             theme: {
                 extend: {
                     colors: {
-                        "primary": "#1d2a67", // Navy Blue
-                        "secondary": "#f8f0ee", // Beige-pink brand color
-                        "accent-pink": "#ff8fa3", // Rose Gold / Soft Pink
+                        "primary": "#1d2a67",
+                        "secondary": "#f8f0ee",
+                        "accent-pink": "#ff8fa3",
                         "background-light": "#f6f6f8",
                         "background-dark": "#13151f",
                     },
-                    fontFamily: {
-                        "display": ["Manrope", "sans-serif"]
-                    },
+                    fontFamily: { "display": ["Manrope", "sans-serif"] },
                     borderRadius: {
-                        "DEFAULT": "0.5rem",
-                        "lg": "1rem",
-                        "xl": "1.5rem",
-                        "full": "9999px"
+                        "DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"
                     },
                 },
             },
         }
-    </script>
+</script>
 <style>
-.eb-tab-on  { background:#1d2a67 !important; color:#fff !important; box-shadow:0 4px 15px rgba(29,42,103,0.3); }
-        .eb-tab-off { background:transparent !important; color:#94a3b8 !important; }
-        .eb-chip { display:inline-block; padding:8px 18px; border-radius:9999px; border:1.5px solid rgba(29,42,103,0.2); background:#fff; color:#1d2a67; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.18s; user-select:none; font-family:'Manrope',sans-serif; }
-        .eb-chip.on { background:#1d2a67 !important; color:#fff !important; border-color:#1d2a67 !important; }
-        .eb-input { width:100%; border:1.5px solid #e2e8f0; border-radius:0.75rem; padding:12px 16px; font-size:14px; font-family:'Manrope',sans-serif; outline:none; color:#0f172a; background:#fff; transition:border-color 0.2s; box-sizing:border-box; }
-        .eb-input:focus { border-color:#1d2a67; box-shadow:0 0 0 3px rgba(29,42,103,0.1); }
-        .eb-error { background:#fef2f2; border:1px solid #fecaca; color:#dc2626; border-radius:0.75rem; padding:10px 14px; font-size:13px; margin-bottom:16px; display:none; }
-        .eb-spinner { width:18px; height:18px; border:2px solid rgba(255,255,255,0.4); border-top-color:#fff; border-radius:50%; animation:eb-spin 0.7s linear infinite; display:none; }
-        .eb-spinner.show { display:inline-block; }
-        @keyframes eb-spin { to { transform:rotate(360deg); } }
-```
+  body { font-family: 'Manrope', sans-serif; }
+  .glass-effect { background: rgba(255,255,255,0.7); backdrop-filter: blur(10px); }
+  .social-card-overlay { background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 40%); }
+  .masonry-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); grid-auto-rows:10px; gap:24px; }
+  .masonry-item { grid-row-end:span 45; }
+  .masonry-item.tall { grid-row-end:span 60; }
+  .masonry-item.short { grid-row-end:span 35; }
 
----
-
-**MODIFICATION 2 — Cherche cette ligne exacte :**
-```
-<!-- Consolidated Registration Form from SCREEN_6 -->
-```
-**Supprime tout depuis cette ligne jusqu'à (et incluant) :**
-```
-</section>
-<!-- Vision Section -->
-        body {
-            font-family: 'Manrope', sans-serif;
-        }
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
-        }
-        .social-card-overlay {
-            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 40%);
-        }
-        .masonry-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            grid-auto-rows: 10px;
-            gap: 24px;
-        }
-        .masonry-item {
-            grid-row-end: span 45; 
-        }
-        .masonry-item.tall {
-            grid-row-end: span 60;
-        }
-        .masonry-item.short {
-            grid-row-end: span 35;
-        }
-    </style>
+  /* ── FORMULAIRE ── */
+  .eb-tab-on  { background:#1d2a67 !important; color:#fff !important; box-shadow:0 4px 15px rgba(29,42,103,0.3); }
+  .eb-tab-off { background:transparent !important; color:#94a3b8 !important; }
+  .eb-tab-off:hover { color:#1d2a67 !important; }
+  .eb-chip {
+    display:inline-block; padding:8px 18px; border-radius:9999px;
+    border:1.5px solid rgba(29,42,103,0.2); background:#fff; color:#1d2a67;
+    font-size:13px; font-weight:600; cursor:pointer; transition:all 0.18s;
+    user-select:none; font-family:'Manrope',sans-serif;
+  }
+  .eb-chip.on { background:#1d2a67 !important; color:#fff !important; border-color:#1d2a67 !important; }
+  .eb-chip:hover:not(.on) { border-color:#1d2a67; background:rgba(29,42,103,0.04); }
+  .eb-input {
+    width:100%; border:1.5px solid #e2e8f0; border-radius:0.75rem;
+    padding:12px 16px; font-size:14px; font-family:'Manrope',sans-serif;
+    outline:none; color:#0f172a; background:#fff;
+    transition:border-color 0.2s,box-shadow 0.2s; box-sizing:border-box;
+  }
+  .eb-input:focus { border-color:#1d2a67; box-shadow:0 0 0 3px rgba(29,42,103,0.1); }
+  .eb-error {
+    background:#fef2f2; border:1px solid #fecaca; color:#dc2626;
+    border-radius:0.75rem; padding:10px 14px; font-size:13px;
+    margin-bottom:16px; display:none;
+  }
+  .eb-spinner {
+    width:18px; height:18px; border:2px solid rgba(255,255,255,0.4);
+    border-top-color:#fff; border-radius:50%;
+    animation:eb-spin 0.7s linear infinite; display:none;
+  }
+  .eb-spinner.show { display:inline-block; }
+  @keyframes eb-spin { to { transform:rotate(360deg); } }
+</style>
 </head>
 <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 transition-colors duration-300">
 <div class="relative flex h-auto min-h-screen w-full flex-col">
 <div class="layout-container flex h-full grow flex-col">
+
 <header class="sticky top-0 z-50 glass-effect border-b border-primary/10 px-6 lg:px-20 flex items-center justify-between py-6">
 <div class="flex items-center gap-3">
-<!-- Enlarged premium logo from SCREEN_10 -->
 <img alt="EdeneBeauty Logo" class="w-auto object-contain h-20" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBiceyZpSNcuUY7T3RdA0fqzZ9hs0_2kfoIYREdS73QbyLhSBUFozBtJfVm2FZfs2LCcHYU_UMyZNKo0KwL2ihyqZk9Ws-4FubPlDl_htbzmkAmrZ8Fk7mPB3iGGisICjKixlEFaabToJ2N2Yd3oJoN-DPA-oV7qED84Xa9hLSrdcgMsCo95vDEkbROnGidUnvlE5HkCehNahPmpuR0epwWmJyjYJTDm61uXZxebN-B8mhhwwRMQl44KvLNindzJLbTWGYWXtF9U9yw"/>
 </div>
 <nav class="hidden md:flex items-center gap-10">
@@ -97,33 +83,28 @@
 <a class="text-sm font-semibold hover:text-primary transition-colors" href="#communaute">Communauté</a>
 <a class="text-sm font-semibold hover:text-primary transition-colors" href="#inscription">Pré-inscription</a>
 </nav>
-<button class="bg-primary text-white rounded-xl px-6 py-2.5 text-sm font-bold shadow-lg shadow-primary/20 hover:scale-105 transition-transform">
-                    Connexion
-                </button>
+<button class="bg-primary text-white rounded-xl px-6 py-2.5 text-sm font-bold shadow-lg shadow-primary/20 hover:scale-105 transition-transform">Connexion</button>
 </header>
+
 <main class="flex-1">
-<!-- Hero Section -->
+
 <section class="relative overflow-hidden pt-16 pb-24 lg:pt-24 lg:pb-32 px-6 lg:px-20">
 <div class="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-16">
 <div class="flex-1 space-y-8 text-center lg:text-left">
 <h1 class="text-5xl lg:text-7xl font-black text-slate-900 dark:text-white leading-[1.1] tracking-tight">
-                                Devenez actrice de votre <span class="text-primary italic">beauté</span>.
-                            </h1>
+  Devenez actrice de votre <span class="text-primary italic">beauté</span>.
+</h1>
 <p class="text-lg lg:text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto lg:mx-0">
-                                Rejoignez la première plateforme dédiée à l'excellence des services de beauté. Une expérience sur mesure pour sublimer chaque instant.
-                            </p>
+  Rejoignez la première plateforme dédiée à l'excellence des services de beauté. Une expérience sur mesure pour sublimer chaque instant.
+</p>
 <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-<a class="bg-primary text-white rounded-xl h-14 px-8 flex items-center justify-center text-lg font-bold shadow-xl shadow-primary/30 hover:opacity-90 transition-opacity" href="#inscription">
-                                    Je m'inscris maintenant
-                                </a>
-<a class="bg-white border-2 border-primary/10 text-primary rounded-xl h-14 px-8 flex items-center justify-center text-lg font-bold hover:bg-primary/5 transition-colors" href="#concept">
-                                    Découvrir le concept
-                                </a>
+<a class="bg-primary text-white rounded-xl h-14 px-8 flex items-center justify-center text-lg font-bold shadow-xl shadow-primary/30 hover:opacity-90 transition-opacity" href="#inscription">Je m'inscris maintenant</a>
+<a class="bg-white border-2 border-primary/10 text-primary rounded-xl h-14 px-8 flex items-center justify-center text-lg font-bold hover:bg-primary/5 transition-colors" href="#concept">Découvrir le concept</a>
 </div>
 </div>
 <div class="flex-1 w-full max-w-xl">
 <div class="relative rounded-3xl overflow-hidden shadow-2xl border-8 border-white dark:border-slate-800 rotate-2">
-<img alt="Beauty Excellence" class="w-full h-auto object-cover aspect-[4/5]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_m1QKRtC7jT57k77TIntq_SzQrRHqz7l9xD_DNBlOpe2pvAfIIryow9_1dbTueD8VI40t6xDG7YIlOdu-8mmbSvad5O2XhAato5wqs4KWkCd6110-cGuGSQHBJAYpT4akKap71sClz4dqeNRk9bG6wuO8qRjwshixr8uGz1jg26IqD7ZXA3fgtiYhZBL2P5McshTQXZwCutGQZL-CCFDOILkSoCIrE1hmZX7jYVwmVCx296yMdRi_uDR2PGS9O9netww2hFhGFNS6"/>
+<img alt="Inclusive Beauty Excellence" class="w-full h-auto object-cover aspect-[4/5]" src="https://lh3.googleusercontent.com/aida/ADBb0uhgd8I1bzpqfBibbvigB3Qb8FcD7TvRO5_V-xcTvjb2FXKbqoO5ENQRERT_Jr3U0V9ZHyYnc4wjmS1aaUhp7MHpkO3h7AYg9BvNzwX6utAYzIKaWMknTKmTfZqp3w5G3g66qR_zfnF6S76AayvGq7Ld-0Jdk4DUNOpRBbmZYM7rhNSuvF4Wvtnq1Xr-RHE32GNPpE7gKI5X90D3attrbrUmTq6--t8QnGAHwQYihg_JusqL6jVXW9-D4vQlTYcxisHqafOiBY8Tng"/>
 <div class="absolute bottom-6 left-6 right-6 bg-white/90 dark:bg-slate-900/90 backdrop-blur p-6 rounded-2xl shadow-xl">
 <div class="flex items-center gap-4">
 <div class="flex -space-x-3">
@@ -138,7 +119,7 @@
 </div>
 </div>
 </section>
-<!-- Concept Section -->
+
 <section class="py-24 bg-white dark:bg-slate-900/50" id="concept">
 <div class="max-w-7xl mx-auto px-6 lg:px-20">
 <div class="text-center mb-16 space-y-4">
@@ -147,58 +128,36 @@
 </div>
 <div class="grid md:grid-cols-3 gap-8">
 <div class="bg-background-light dark:bg-slate-800 p-10 rounded-3xl border border-primary/5 hover:border-primary/20 transition-all group">
-<div class="w-16 h-16 bg-primary text-white rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
-<span class="material-symbols-outlined text-3xl">calendar_month</span>
-</div>
+<div class="w-16 h-16 bg-primary text-white rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform"><span class="material-symbols-outlined text-3xl">calendar_month</span></div>
 <h3 class="text-2xl font-bold mb-4">Réserver</h3>
 <p class="text-slate-600 dark:text-slate-400 leading-relaxed">Accédez aux meilleurs experts en un clic. Planifiez vos prestations beauté selon votre emploi du temps, en salon ou à domicile.</p>
 </div>
 <div class="bg-background-light dark:bg-slate-800 p-10 rounded-3xl border border-primary/5 hover:border-primary/20 transition-all group">
-<div class="w-16 h-16 bg-primary text-white rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
-<span class="material-symbols-outlined text-3xl">auto_awesome</span>
-</div>
+<div class="w-16 h-16 bg-primary text-white rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform"><span class="material-symbols-outlined text-3xl">auto_awesome</span></div>
 <h3 class="text-2xl font-bold mb-4">S'inspirer</h3>
 <p class="text-slate-600 dark:text-slate-400 leading-relaxed">Découvrez les dernières tendances, tutoriels et looks personnalisés. Notre algorithme apprend de vos goûts pour vous proposer le meilleur.</p>
 </div>
 <div class="bg-background-light dark:bg-slate-800 p-10 rounded-3xl border border-primary/5 hover:border-primary/20 transition-all group">
-<div class="w-16 h-16 bg-primary text-white rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
-<span class="material-symbols-outlined text-3xl">account_balance_wallet</span>
-</div>
+<div class="w-16 h-16 bg-primary text-white rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform"><span class="material-symbols-outlined text-3xl">account_balance_wallet</span></div>
 <h3 class="text-2xl font-bold mb-4">Gagner</h3>
 <p class="text-slate-600 dark:text-slate-400 leading-relaxed">Chaque soin vous rapporte. Profitez de notre système de cashback et de parrainage pour financer votre routine beauté.</p>
 </div>
 </div>
 </div>
 </section>
-<!-- Avantages Exclusifs -->
+
 <section class="py-24" id="avantages">
 <div class="max-w-7xl mx-auto px-6 lg:px-20">
 <h2 class="text-3xl lg:text-4xl font-black mb-12 text-center lg:text-left">Avantages Exclusifs</h2>
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-<div class="bg-white dark:bg-slate-800 p-8 rounded-2xl border border-primary/5 flex flex-col items-center text-center">
-<span class="material-symbols-outlined text-primary text-4xl mb-4">featured_seasonal_and_gifts</span>
-<h4 class="font-bold text-lg mb-2">Carte Cadeau</h4>
-<p class="text-sm text-slate-500">Offrez la liberté de choisir le soin idéal à vos proches.</p>
-</div>
-<div class="bg-white dark:bg-slate-800 p-8 rounded-2xl border border-primary/5 flex flex-col items-center text-center">
-<span class="material-symbols-outlined text-primary text-4xl mb-4">wallet</span>
-<h4 class="font-bold text-lg mb-2">Portefeuille</h4>
-<p class="text-sm text-slate-500">Gérez votre budget beauté en toute sécurité et simplicité.</p>
-</div>
-<div class="bg-white dark:bg-slate-800 p-8 rounded-2xl border border-primary/5 flex flex-col items-center text-center">
-<span class="material-symbols-outlined text-primary text-4xl mb-4">savings</span>
-<h4 class="font-bold text-lg mb-2">Cashback</h4>
-<p class="text-sm text-slate-500">Récupérez jusqu'à 10% sur chaque prestation effectuée.</p>
-</div>
-<div class="bg-white dark:bg-slate-800 p-8 rounded-2xl border border-primary/5 flex flex-col items-center text-center">
-<span class="material-symbols-outlined text-primary text-4xl mb-4">book_2</span>
-<h4 class="font-bold text-lg mb-2">Edene BeautyBook</h4>
-<p class="text-sm text-slate-500">Votre carnet de styles digital pour ne plus jamais manquer d'idées.</p>
-</div>
+<div class="bg-white dark:bg-slate-800 p-8 rounded-2xl border border-primary/5 flex flex-col items-center text-center"><span class="material-symbols-outlined text-primary text-4xl mb-4">featured_seasonal_and_gifts</span><h4 class="font-bold text-lg mb-2">Carte Cadeau</h4><p class="text-sm text-slate-500">Offrez la liberté de choisir le soin idéal à vos proches.</p></div>
+<div class="bg-white dark:bg-slate-800 p-8 rounded-2xl border border-primary/5 flex flex-col items-center text-center"><span class="material-symbols-outlined text-primary text-4xl mb-4">wallet</span><h4 class="font-bold text-lg mb-2">Portefeuille</h4><p class="text-sm text-slate-500">Gérez votre budget beauté en toute sécurité et simplicité.</p></div>
+<div class="bg-white dark:bg-slate-800 p-8 rounded-2xl border border-primary/5 flex flex-col items-center text-center"><span class="material-symbols-outlined text-primary text-4xl mb-4">savings</span><h4 class="font-bold text-lg mb-2">Cashback</h4><p class="text-sm text-slate-500">Récupérez jusqu'à 10% sur chaque prestation effectuée.</p></div>
+<div class="bg-white dark:bg-slate-800 p-8 rounded-2xl border border-primary/5 flex flex-col items-center text-center"><span class="material-symbols-outlined text-primary text-4xl mb-4">book_2</span><h4 class="font-bold text-lg mb-2">Edene BeautyBook</h4><p class="text-sm text-slate-500">Votre carnet de styles digital pour ne plus jamais manquer d'idées.</p></div>
 </div>
 </div>
 </section>
-<!-- Inclusive 'Inspiration' Section with diverse models and interactive buttons -->
+
 <section class="py-24 bg-primary/5 overflow-hidden">
 <div class="max-w-7xl mx-auto px-6 lg:px-20">
 <div class="text-center mb-16">
@@ -206,399 +165,278 @@
 <p class="text-slate-500 text-lg">Découvrez les looks qui font vibrer notre communauté. Shoppez votre prochain style.</p>
 </div>
 <div class="masonry-grid">
-<!-- Card 1: Black Woman - Hair -->
 <div class="masonry-item tall group relative rounded-3xl overflow-hidden shadow-xl">
 <img alt="Braids style on Black woman" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKlHoNgnh6wK7QWOHUe6Pe8e8LGahlwyh_KwGnxEOikWo6fSxK1ZPGuXUqjy67F9FisiDzr4K3tU9gKj10kbnaBbotmI14S1qEcEl-8kEQzRqOt-p0AOf67fm0rFq7CXFK7CcZsvq9q_NI5Gi2b9Aol4Ss2NJUpbLpnFt8VtaKUsewh5KD8wOWMPgqtx2ogOg-ZBpdgZYrJZuzVY69SyLfquAqaHFQNYjRQNcaGmSecdNYy9te8EFWUW0THJnup53C10mSHephYKBI"/>
-<div class="absolute inset-0 social-card-overlay flex flex-col justify-end p-6">
-<div class="flex justify-between items-end">
-<div class="space-y-2">
-<p class="text-white font-bold text-xl">Box Braids Signature</p>
-<p class="text-white/80 text-sm">@Aisha_Style • Coiffure</p>
-<button class="mt-4 bg-accent-pink text-white rounded-full px-6 py-2 text-sm font-bold shadow-lg hover:bg-white hover:text-primary transition-all">
-                                                Réserver ce look
-                                            </button>
+<div class="absolute inset-0 social-card-overlay flex flex-col justify-end p-6"><div class="flex justify-between items-end"><div class="space-y-2"><p class="text-white font-bold text-xl">Box Braids Signature</p><p class="text-white/80 text-sm">@Aisha_Style • Coiffure</p><button class="mt-4 bg-accent-pink text-white rounded-full px-6 py-2 text-sm font-bold shadow-lg hover:bg-white hover:text-primary transition-all">Réserver ce look</button></div><div class="flex flex-col gap-4 items-center"><button class="flex flex-col items-center group/btn"><span class="material-symbols-outlined text-white text-2xl group-hover/btn:text-red-500 transition-all">favorite</span><span class="text-[10px] text-white font-bold">1.2k</span></button><button class="flex flex-col items-center"><span class="material-symbols-outlined text-white text-2xl">bookmark</span><span class="text-[10px] text-white font-bold">Save</span></button><button class="flex flex-col items-center"><span class="material-symbols-outlined text-white text-2xl">share</span><span class="text-[10px] text-white font-bold">Share</span></button></div></div></div>
 </div>
-<div class="flex flex-col gap-4 items-center">
-<button class="flex flex-col items-center group/btn">
-<span class="material-symbols-outlined text-white text-2xl group-hover/btn:text-red-500 group-hover/btn:fill-1 transition-all">favorite</span>
-<span class="text-[10px] text-white font-bold">1.2k</span>
-</button>
-<button class="flex flex-col items-center">
-<span class="material-symbols-outlined text-white text-2xl">bookmark</span>
-<span class="text-[10px] text-white font-bold">Save</span>
-</button>
-<button class="flex flex-col items-center">
-<span class="material-symbols-outlined text-white text-2xl">share</span>
-<span class="text-[10px] text-white font-bold">Share</span>
-</button>
-</div>
-</div>
-</div>
-</div>
-<!-- Card 2: Latina Woman - Makeup -->
 <div class="masonry-item group relative rounded-3xl overflow-hidden shadow-xl">
 <img alt="Sun-kissed makeup on Latina woman" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkK2GTA7qBGffkuSm76UAd9o5DkWE9NvPB1Lu6TtbE6Xw7fradrrwMSUY9bLA4q5OpTd7RxMiWljVWM-PtVRA83jTGXBdisX_Umgqse4p0MsRRzcFsl3cJOjqe-P89bYz9pOIswiU_dh48LdxHMFMjxqbzZbHEne_Anm2riUofjKpGufJIyoV0wHHetBKVMuuzIOQYPGzjmxbWxJn-hWkEi5OrYBTRm2sG41-df6zI4-z5h1g-JNi4GeXdbzx132TogeJOC5XSiBNv"/>
-<div class="absolute inset-0 social-card-overlay flex flex-col justify-end p-6">
-<div class="flex justify-between items-end">
-<div class="space-y-2">
-<p class="text-white font-bold text-xl">Sun-kissed Glow</p>
-<p class="text-white/80 text-sm">@Maria_MUA • Maquillage</p>
-<button class="mt-4 bg-accent-pink text-white rounded-full px-6 py-2 text-sm font-bold shadow-lg hover:bg-white hover:text-primary transition-all">
-                                                Réserver ce look
-                                            </button>
+<div class="absolute inset-0 social-card-overlay flex flex-col justify-end p-6"><div class="flex justify-between items-end"><div class="space-y-2"><p class="text-white font-bold text-xl">Sun-kissed Glow</p><p class="text-white/80 text-sm">@Maria_MUA • Maquillage</p><button class="mt-4 bg-accent-pink text-white rounded-full px-6 py-2 text-sm font-bold shadow-lg hover:bg-white hover:text-primary transition-all">Réserver ce look</button></div><div class="flex flex-col gap-4 items-center"><button class="flex flex-col items-center group/btn"><span class="material-symbols-outlined text-white text-2xl group-hover/btn:text-red-500 transition-all">favorite</span><span class="text-[10px] text-white font-bold">850</span></button><button class="flex flex-col items-center"><span class="material-symbols-outlined text-white text-2xl">bookmark</span><span class="text-[10px] text-white font-bold">Save</span></button></div></div></div>
 </div>
-<div class="flex flex-col gap-4 items-center">
-<button class="flex flex-col items-center group/btn">
-<span class="material-symbols-outlined text-white text-2xl group-hover/btn:text-red-500 transition-all">favorite</span>
-<span class="text-[10px] text-white font-bold">850</span>
-</button>
-<button class="flex flex-col items-center">
-<span class="material-symbols-outlined text-white text-2xl">bookmark</span>
-<span class="text-[10px] text-white font-bold">Save</span>
-</button>
-</div>
-</div>
-</div>
-</div>
-<!-- Card 3: Asian Woman - Skincare -->
 <div class="masonry-item short group relative rounded-3xl overflow-hidden shadow-xl">
 <img alt="Glass skin on Asian woman" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBENuWXxuq9IdieDMboGfPA0pG6jgQVQm6IVNKinpSapYeAzU2PgA3Qqpky5j0s3VHO28vvE9DRvO4TWENODbJX761yBXrALbG_QtYomU-45fGg0ZkzTsJdfRmBYP_XnNxJczSBAcBl15IWEPB7dnMwqyw4Al7OvPivzO9Qn6kA1vsqriT8MB578GEy5zsVRVgWD7_-2JboQxuMalIVScZnpDv9W2RaynI0G0rW2R2Qzh2JgnLEQupfbrKwQUDFndfv8ffAOF9LqKRD"/>
-<div class="absolute inset-0 social-card-overlay flex flex-col justify-end p-6">
-<div class="flex justify-between items-end">
-<div class="space-y-2">
-<p class="text-white font-bold text-xl">Glass Skin Ritual</p>
-<p class="text-white/80 text-sm">@Mei_Care • Soins</p>
-<button class="mt-4 bg-accent-pink text-white rounded-full px-6 py-2 text-sm font-bold shadow-lg hover:bg-white hover:text-primary transition-all">
-                                                Réserver ce look
-                                            </button>
+<div class="absolute inset-0 social-card-overlay flex flex-col justify-end p-6"><div class="flex justify-between items-end"><div class="space-y-2"><p class="text-white font-bold text-xl">Glass Skin Ritual</p><p class="text-white/80 text-sm">@Mei_Care • Soins</p><button class="mt-4 bg-accent-pink text-white rounded-full px-6 py-2 text-sm font-bold shadow-lg hover:bg-white hover:text-primary transition-all">Réserver ce look</button></div><div class="flex flex-col gap-4 items-center"><button class="flex flex-col items-center group/btn"><span class="material-symbols-outlined text-white text-2xl group-hover/btn:text-red-500 transition-all">favorite</span><span class="text-[10px] text-white font-bold">2.4k</span></button><button class="flex flex-col items-center"><span class="material-symbols-outlined text-white text-2xl">bookmark</span><span class="text-[10px] text-white font-bold">Save</span></button></div></div></div>
 </div>
-<div class="flex flex-col gap-4 items-center">
-<button class="flex flex-col items-center group/btn">
-<span class="material-symbols-outlined text-white text-2xl group-hover/btn:text-red-500 transition-all">favorite</span>
-<span class="text-[10px] text-white font-bold">2.4k</span>
-</button>
-<button class="flex flex-col items-center">
-<span class="material-symbols-outlined text-white text-2xl">bookmark</span>
-<span class="text-[10px] text-white font-bold">Save</span>
-</button>
-</div>
-</div>
-</div>
-</div>
-<!-- Card 4: Arab Woman - Bridal -->
 <div class="masonry-item tall group relative rounded-3xl overflow-hidden shadow-xl">
 <img alt="Bridal makeup on Arab woman" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCBp3H_4aRhpdqUdKvyl6Q5eBNKK0AG7w1xSRSotk0WVhNOTrsD8Wo_DMFbF4DBrjf0fBig4q2-L6BJz8fUTj6IRGRPjelVlBW9eQ5AA_8K9KjQKkK3qEyEQYdsM1ffsQoxHbOx7LvomopMQJYrtvSYPaQNXDxBJvx1HTRZtxbHoUJRcvysIYSWTmzVOiUI-Yw_imDFBOUh3ldFPkyTU-CylQNDCmvwZ6TN_lHn0DjEA5vUIocqo2PDdbpGBebkiBaN6NYXNRzyJ7DM"/>
-<div class="absolute inset-0 social-card-overlay flex flex-col justify-end p-6">
-<div class="flex justify-between items-end">
-<div class="space-y-2">
-<p class="text-white font-bold text-xl">Bridal Elegance</p>
-<p class="text-white/80 text-sm">@Layla_Luxe • Mariage</p>
-<button class="mt-4 bg-accent-pink text-white rounded-full px-6 py-2 text-sm font-bold shadow-lg hover:bg-white hover:text-primary transition-all">
-                                                Réserver ce look
-                                            </button>
+<div class="absolute inset-0 social-card-overlay flex flex-col justify-end p-6"><div class="flex justify-between items-end"><div class="space-y-2"><p class="text-white font-bold text-xl">Bridal Elegance</p><p class="text-white/80 text-sm">@Layla_Luxe • Mariage</p><button class="mt-4 bg-accent-pink text-white rounded-full px-6 py-2 text-sm font-bold shadow-lg hover:bg-white hover:text-primary transition-all">Réserver ce look</button></div><div class="flex flex-col gap-4 items-center"><button class="flex flex-col items-center group/btn"><span class="material-symbols-outlined text-white text-2xl group-hover/btn:text-red-500 transition-all">favorite</span><span class="text-[10px] text-white font-bold">3.1k</span></button><button class="flex flex-col items-center"><span class="material-symbols-outlined text-white text-2xl">share</span><span class="text-[10px] text-white font-bold">Share</span></button></div></div></div>
 </div>
-<div class="flex flex-col gap-4 items-center">
-<button class="flex flex-col items-center group/btn">
-<span class="material-symbols-outlined text-white text-2xl group-hover/btn:text-red-500 transition-all">favorite</span>
-<span class="text-[10px] text-white font-bold">3.1k</span>
-</button>
-<button class="flex flex-col items-center">
-<span class="material-symbols-outlined text-white text-2xl">share</span>
-<span class="text-[10px] text-white font-bold">Share</span>
-</button>
-</div>
-</div>
-</div>
-</div>
-<!-- Card 5: European Woman - Hair Color -->
 <div class="masonry-item group relative rounded-3xl overflow-hidden shadow-xl">
 <img alt="Icy blonde on European woman" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVBf9K1h_-ehg6cXb10OWgkmtflLZW2fpA6wWWnszhubruzioD3Kw8u-GeqSCUjscJiLaZAR4aKLUgaCiNCQQBbjzRV2ffMbNHm9HcSBZSUPGBUoHpUuT9TOoQIGRTasXkkIbcYhjHX1WGJtg5BaN7IaJoxnCV9M0gyF1-kKRM01gZeFYM0NSP4m8bLCVQ7qhFwOgtKVYv54K9c44slz0PTcGtnDSr83PJESTaAciFGt_yUbl3vihdMX6Y1kjsKoyHEW3Hud6Fu5Rw"/>
-<div class="absolute inset-0 social-card-overlay flex flex-col justify-end p-6">
-<div class="flex justify-between items-end">
-<div class="space-y-2">
-<p class="text-white font-bold text-xl">Icy Blonde Melt</p>
-<p class="text-white/80 text-sm">@Chloe_Hair • Coloration</p>
-<button class="mt-4 bg-accent-pink text-white rounded-full px-6 py-2 text-sm font-bold shadow-lg hover:bg-white hover:text-primary transition-all">
-                                                Réserver ce look
-                                            </button>
-</div>
-<div class="flex flex-col gap-4 items-center">
-<button class="flex flex-col items-center group/btn">
-<span class="material-symbols-outlined text-white text-2xl group-hover/btn:text-red-500 transition-all">favorite</span>
-<span class="text-[10px] text-white font-bold">1.5k</span>
-</button>
-<button class="flex flex-col items-center">
-<span class="material-symbols-outlined text-white text-2xl">bookmark</span>
-<span class="text-[10px] text-white font-bold">Save</span>
-</button>
+<div class="absolute inset-0 social-card-overlay flex flex-col justify-end p-6"><div class="flex justify-between items-end"><div class="space-y-2"><p class="text-white font-bold text-xl">Icy Blonde Melt</p><p class="text-white/80 text-sm">@Chloe_Hair • Coloration</p><button class="mt-4 bg-accent-pink text-white rounded-full px-6 py-2 text-sm font-bold shadow-lg hover:bg-white hover:text-primary transition-all">Réserver ce look</button></div><div class="flex flex-col gap-4 items-center"><button class="flex flex-col items-center group/btn"><span class="material-symbols-outlined text-white text-2xl group-hover/btn:text-red-500 transition-all">favorite</span><span class="text-[10px] text-white font-bold">1.5k</span></button><button class="flex flex-col items-center"><span class="material-symbols-outlined text-white text-2xl">bookmark</span><span class="text-[10px] text-white font-bold">Save</span></button></div></div></div>
 </div>
 </div>
-</div>
-</div>
-</div>
-<div class="mt-16 flex justify-center">
-<button class="flex items-center gap-2 text-primary font-bold hover:gap-4 transition-all">
-                                Voir plus d'inspirations 
-                                <span class="material-symbols-outlined">arrow_forward</span>
-</button>
-</div>
+<div class="mt-16 flex justify-center"><button class="flex items-center gap-2 text-primary font-bold hover:gap-4 transition-all">Voir plus d'inspirations <span class="material-symbols-outlined">arrow_forward</span></button></div>
 </div>
 </section>
-<!-- Communauté Section -->
+
 <section class="py-24 bg-white dark:bg-slate-900" id="communaute">
 <div class="max-w-7xl mx-auto px-6 lg:px-20">
 <div class="flex flex-col lg:flex-row items-center gap-16">
 <div class="flex-1 space-y-12">
 <h2 class="text-4xl lg:text-5xl font-black">Rejoignez la Communauté</h2>
 <div class="space-y-8">
-<div class="flex gap-6 items-start">
-<div class="size-14 bg-primary/10 rounded-2xl flex items-center justify-center shrink-0">
-<span class="material-symbols-outlined text-primary">work</span>
-</div>
-<div>
-<h4 class="text-xl font-bold mb-2">Professionnelle</h4>
-<p class="text-slate-500">Développez votre activité, gérez votre agenda et gagnez en visibilité auprès d'une clientèle qualifiée.</p>
-</div>
-</div>
-<div class="flex gap-6 items-start">
-<div class="size-14 bg-primary/10 rounded-2xl flex items-center justify-center shrink-0">
-<span class="material-symbols-outlined text-primary">person</span>
-</div>
-<div>
-<h4 class="text-xl font-bold mb-2">Cliente</h4>
-<p class="text-slate-500">Accédez à des services d'exception, découvrez des looks et profitez d'un programme de fidélité unique.</p>
-</div>
-</div>
-<div class="flex gap-6 items-start">
-<div class="size-14 bg-primary/10 rounded-2xl flex items-center justify-center shrink-0">
-<span class="material-symbols-outlined text-primary">stars</span>
-</div>
-<div>
-<h4 class="text-xl font-bold mb-2">Influenceuse</h4>
-<p class="text-slate-500">Partagez vos looks favoris, créez votre BeautyBook et soyez rémunérée pour votre influence.</p>
-</div>
-</div>
+<div class="flex gap-6 items-start"><div class="size-14 bg-primary/10 rounded-2xl flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-primary">work</span></div><div><h4 class="text-xl font-bold mb-2">Professionnelle</h4><p class="text-slate-500">Développez votre activité, gérez votre agenda et gagnez en visibilité auprès d'une clientèle qualifiée.</p></div></div>
+<div class="flex gap-6 items-start"><div class="size-14 bg-primary/10 rounded-2xl flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-primary">person</span></div><div><h4 class="text-xl font-bold mb-2">Cliente</h4><p class="text-slate-500">Accédez à des services d'exception, découvrez des looks et profitez d'un programme de fidélité unique.</p></div></div>
+<div class="flex gap-6 items-start"><div class="size-14 bg-primary/10 rounded-2xl flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-primary">stars</span></div><div><h4 class="text-xl font-bold mb-2">Influenceuse</h4><p class="text-slate-500">Partagez vos looks favoris, créez votre BeautyBook et soyez rémunérée pour votre influence.</p></div></div>
 </div>
 </div>
 <div class="flex-1 grid grid-cols-2 gap-4">
 <div class="space-y-4 pt-12">
-<img class="rounded-2xl shadow-lg w-full aspect-square object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQpGNvtBRUthV8UIyVscdck2QjhtZLsW3UmQM3e7m_-jCtPUeuqRQkwnRSeq-I5ILXrvGE_Dh8AdDUWcH_HiLaSQGgCCGyoFftktsltf2MYl0KAqZHuVO1dT5mf2pkGwfm9gQaAlA8eNx_t0nCwG3h4ivEjf3Qk0YesgTN-DBFLnLV6YuAAaZeYQt13bzMlp1zcqBiK4zgBd8hqVyJPPQ_tiaPqAz_L6warWGswe1j1uNgiXa1158n8Mcrr5mtHHNG0K2ZEknx8z79"/>
-<img class="rounded-2xl shadow-lg w-full aspect-[3/4] object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxs2__GJGnJwSiz6yLHLQJ6wC3g6V7AJosW3TkuAvKFbW8UJV2qcLZUS6pwmk34ZVuH2JeeXTSV2Q9sDdcojfOuu578ZF6Dom3nh4-Hvbp96geiOLTdiv6ze-zMpsVI4qxNnQslmIJAa1wSJDxDCAS8-BsImuXH9AHyArTfnhI7TioySt9nzMGw_MSjDQTREeHBfohpfYgX6mRV7CWGgJZsoQqQ_n_JQLizu4Yx3eyr1hp2aF6fd0ekO5YaR7GwWgrNzPrt4C2o4mk"/>
+<img class="rounded-2xl shadow-lg w-full aspect-square object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKlHoNgnh6wK7QWOHUe6Pe8e8LGahlwyh_KwGnxEOikWo6fSxK1ZPGuXUqjy67F9FisiDzr4K3tU9gKj10kbnaBbotmI14S1qEcEl-8kEQzRqOt-p0AOf67fm0rFq7CXFK7CcZsvq9q_NI5Gi2b9Aol4Ss2NJUpbLpnFt8VtaKUsewh5KD8wOWMPgqtx2ogOg-ZBpdgZYrJZuzVY69SyLfquAqaHFQNYjRQNcaGmSecdNYy9te8EFWUW0THJnup53C10mSHephYKBI"/>
+<img class="rounded-2xl shadow-lg w-full aspect-[3/4] object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCBp3H_4aRhpdqUdKvyl6Q5eBNKK0AG7w1xSRSotk0WVhNOTrsD8Wo_DMFbF4DBrjf0fBig4q2-L6BJz8fUTj6IRGRPjelVlBW9eQ5AA_8K9KjQKkK3qEyEQYdsM1ffsQoxHbOx7LvomopMQJYrtvSYPaQNXDxBJvx1HTRZtxbHoUJRcvysIYSWTmzVOiUI-Yw_imDFBOUh3ldFPkyTU-CylQNDCmvwZ6TN_lHn0DjEA5vUIocqo2PDdbpGBebkiBaN6NYXNRzyJ7DM"/>
 </div>
 <div class="space-y-4">
-<img class="rounded-2xl shadow-lg w-full aspect-[3/4] object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBe4WLiJow8LAjTwqnFMrZ7whLTFKW_Rwhe4JQQbFUbVOn8L2BpQu3uOcMIjs0O5IMgv4wC5nDucN8DE8vIfcp5vlzZiyO43fzEueg9jcmbWl9nWgs8Y-K4S_3VdlB3oy9vp15na7N6oNmXKvjcC3IQeQQQHbeWU857gERFZgyISSG7C5exgLjzN4WJ9GMihjHyUfkbTFRRPJa--fVbcQzlYsifZAFPt5PyviNItIXPWS02O2OIN9-WiE_fLzW8IHdD1E5_UZH29uAk"/>
-<img class="rounded-2xl shadow-lg w-full aspect-square object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDp8LbPQkcJHB8yZEtzzjcEqhW-316AxLGvoXjRU3fg7D-saekDSohP1pMdTiSZ2iKfgCLrxiW5giSeaep6WcHC3dNGgRjr52waFWviOrN9WnJgyZPpuUYKBJ3-_WsLy2lL4bYmT9U6pjpwDcsFPwIP0ed3_kP_CCQIdgv-0-0vkCdwYmhcxm4DEZFcR4NYkTUYGOTUSpZMePhbauI76omSJs42rlQFsiG_iCZzvpvJV0MPLf20S1OpkRefOeOx9gwFd9Z_qXSbeakp"/>
+<img class="rounded-2xl shadow-lg w-full aspect-[3/4] object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVBf9K1h_-ehg6cXb10OWgkmtflLZW2fpA6wWWnszhubruzioD3Kw8u-GeqSCUjscJiLaZAR4aKLUgaCiNCQQBbjzRV2ffMbNHm9HcSBZSUPGBUoHpUuT9TOoQIGRTasXkkIbcYhjHX1WGJtg5BaN7IaJoxnCV9M0gyF1-kKRM01gZeFYM0NSP4m8bLCVQ7qhFwOgtKVYv54K9c44slz0PTcGtnDSr83PJESTaAciFGt_yUbl3vihdMX6Y1kjsKoyHEW3Hud6Fu5Rw"/>
+<img class="rounded-2xl shadow-lg w-full aspect-square object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBENuWXxuq9IdieDMboGfPA0pG6jgQVQm6IVNKinpSapYeAzU2PgA3Qqpky5j0s3VHO28vvE9DRvO4TWENODbJX761yBXrALbG_QtYomU-45fGg0ZkzTsJdfRmBYP_XnNxJczSBAcBl15IWEPB7dnMwqyw4Al7OvPivzO9Qn6kA1vsqriT8MB578GEy5zsVRVgWD7_-2JboQxuMalIVScZnpDv9W2RaynI0G0rW2R2Qzh2JgnLEQupfbrKwQUDFndfv8ffAOF9LqKRD"/>
 </div>
 </div>
 </div>
 </div>
 </section>
-<!-- Consolidated Registration Form from SCREEN_6 -->
+
+<!-- ═══════════════════════════════════════════
+     FORMULAIRE PRÉ-INSCRIPTION
+     ═══════════════════════════════════════════ -->
 <section class="py-24 bg-background-light dark:bg-slate-800" id="inscription">
 <div class="max-w-4xl mx-auto px-6 lg:px-20">
 <div class="bg-white dark:bg-slate-900 rounded-[2.5rem] shadow-2xl p-8 lg:p-16 border border-primary/5">
-<div class="text-center mb-12">
-<h2 class="text-3xl font-black mb-4">Pré-inscription</h2>
-<p class="text-slate-500">Soyez parmi les premières à découvrir EdeneBeauty. Remplissez le formulaire ci-dessous pour être informée du lancement.</p>
-</div>
-<form class="space-y-8" id="registration-form" onsubmit="handleFormSubmit(event)">
-<div class="flex justify-center mb-10">
-<div class="inline-flex p-1 bg-secondary dark:bg-slate-800 rounded-2xl shadow-inner">
-<button class="px-8 py-3 rounded-xl text-sm font-bold transition-all bg-primary text-white shadow-lg" id="tab-clientes" onclick="switchTab('clientes')" type="button">
-                                            Clientes
-                                        </button>
-<button class="px-8 py-3 rounded-xl text-sm font-bold transition-all text-slate-500 hover:text-primary" id="tab-pros" onclick="switchTab('pros')" type="button">
-                                            Professionnelle
-                                        </button>
-</div>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-<div class="flex flex-col gap-2">
-<label class="text-sm font-bold px-1">Nom &amp; Prénom</label>
-<input class="rounded-xl border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary focus:border-primary" placeholder="Jane Doe" type="text"/>
-</div>
-<div class="flex flex-col gap-2">
-<label class="text-sm font-bold px-1">E-mail</label>
-<input class="rounded-xl border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary focus:border-primary" placeholder="jane@example.com" type="email"/>
-</div>
-<div class="flex flex-col gap-2">
-<label class="text-sm font-bold px-1">Téléphone</label>
-<input class="rounded-xl border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary focus:border-primary" placeholder="+33 6 00 00 00 00" type="tel"/>
-</div>
-<div class="flex flex-col gap-2">
-<label class="text-sm font-bold px-1">Pays</label>
-<input class="rounded-xl border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary focus:border-primary" placeholder="France" type="text"/><div class="hidden md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-8 mt-8 border-t border-primary/5 pt-8" id="pro-fields"><div class="flex flex-col gap-2"><label class="text-sm font-bold px-1">Nom de l'établissement / Salon</label><input class="rounded-xl border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary focus:border-primary" placeholder="Mon Bel Espace" type="text"/></div><div class="flex flex-col gap-2"><label class="text-sm font-bold px-1">SIRET</label><input class="rounded-xl border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary focus:border-primary" placeholder="123 456 789 00012" type="text"/></div></div>
-</div>
-<div class="flex flex-col gap-2">
-<label class="text-sm font-bold px-1">Ville</label>
-<input class="rounded-xl border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary focus:border-primary" placeholder="Paris" type="text"/>
-</div>
-<div class="md:col-span-2 flex flex-col gap-4">
-<label class="text-sm font-bold px-1">Spécialités / Centres d'intérêt</label>
-<!-- Multi-choice tag selector -->
-<div class="flex flex-wrap gap-2">
-<button class="px-4 py-2 rounded-full border border-primary/20 bg-primary text-white text-sm font-semibold transition-all shadow-sm" onclick="toggleSpecialty(this)" type="button">Maquillage</button>
-<button class="px-4 py-2 rounded-full border border-primary/20 bg-white dark:bg-slate-800 text-primary dark:text-slate-300 text-sm font-semibold hover:bg-primary/5 transition-all" onclick="toggleSpecialty(this)" type="button">Coiffure</button>
-<button class="px-4 py-2 rounded-full border border-primary/20 bg-white dark:bg-slate-800 text-primary dark:text-slate-300 text-sm font-semibold hover:bg-primary/5 transition-all" onclick="toggleSpecialty(this)" type="button">Soins du visage</button>
-<button class="px-4 py-2 rounded-full border border-primary/20 bg-white dark:bg-slate-800 text-primary dark:text-slate-300 text-sm font-semibold hover:bg-primary/5 transition-all" onclick="toggleSpecialty(this)" type="button">Manucure</button>
-<button class="px-4 py-2 rounded-full border border-primary/20 bg-white dark:bg-slate-800 text-primary dark:text-slate-300 text-sm font-semibold hover:bg-primary/5 transition-all" onclick="toggleSpecialty(this)" type="button">Massage</button>
-<button class="px-4 py-2 rounded-full border border-primary/20 bg-white dark:bg-slate-800 text-primary dark:text-slate-300 text-sm font-semibold hover:bg-primary/5 transition-all" onclick="toggleSpecialty(this)" type="button">Épilation</button>
-<button class="px-4 py-2 rounded-full border border-primary/20 bg-white dark:bg-slate-800 text-primary dark:text-slate-300 text-sm font-semibold hover:bg-primary/5 transition-all" onclick="toggleSpecialty(this)" type="button">Bien-être</button>
-</div>
-<p class="text-[10px] text-slate-400 px-1">Sélectionnez une ou plusieurs options qui vous correspondent.</p>
-</div>
-</div>
-<div class="flex items-center gap-3">
-<input class="rounded border-slate-300 text-primary focus:ring-primary" id="terms" type="checkbox"/>
-<label class="text-sm text-slate-500" for="terms">J'accepte de recevoir des informations sur le lancement d'EdeneBeauty.</label>
-</div>
-<button class="w-full bg-primary text-white rounded-xl h-14 text-lg font-bold shadow-xl shadow-primary/30 hover:scale-[1.02] transition-transform" type="submit">
-                                    Valider ma pré-inscription
-                                </button>
-<input id="selected-specialties" name="specialties" type="hidden" value="Maquillage"/></form>
+
+  <!-- FORMULAIRE -->
+  <div id="eb-form-box">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl font-black mb-4">Pré-inscription</h2>
+      <p class="text-slate-500">Soyez parmi les premières à découvrir EdeneBeauty. Remplissez le formulaire ci-dessous pour être informée du lancement.</p>
+    </div>
+
+    <div class="eb-error" id="eb-error"></div>
+
+    <!-- ONGLETS -->
+    <div class="flex justify-center mb-10">
+      <div class="inline-flex p-1 bg-secondary dark:bg-slate-800 rounded-2xl shadow-inner gap-1">
+        <button id="eb-tab-cliente" class="eb-tab-on px-8 py-3 rounded-xl text-sm font-bold transition-all" onclick="ebSwitch('cliente')" type="button">Clientes</button>
+        <button id="eb-tab-pro" class="eb-tab-off px-8 py-3 rounded-xl text-sm font-bold transition-all" onclick="ebSwitch('pro')" type="button">Professionnelle</button>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+      <div class="flex flex-col gap-2"><label class="text-sm font-bold px-1">Nom</label><input class="eb-input" id="eb-nom" placeholder="Martin" type="text"/></div>
+      <div class="flex flex-col gap-2"><label class="text-sm font-bold px-1">Prénom</label><input class="eb-input" id="eb-prenom" placeholder="Amara" type="text"/></div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+      <div class="flex flex-col gap-2"><label class="text-sm font-bold px-1">E-mail</label><input class="eb-input" id="eb-email" placeholder="jane@example.com" type="email"/></div>
+      <div class="flex flex-col gap-2"><label class="text-sm font-bold px-1">Téléphone</label><input class="eb-input" id="eb-tel" placeholder="+33 6 00 00 00 00" type="tel"/></div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+      <div class="flex flex-col gap-2">
+        <label class="text-sm font-bold px-1">Pays</label>
+        <select class="eb-input" id="eb-pays">
+          <option value="">Sélectionner...</option>
+          <option>France</option><option>Belgique</option><option>Suisse</option>
+          <option>Canada</option><option>Côte d'Ivoire</option><option>Sénégal</option>
+          <option>Cameroun</option><option>Maroc</option><option>Tunisie</option>
+          <option>Algérie</option><option>Autre</option>
+        </select>
+      </div>
+      <div class="flex flex-col gap-2"><label class="text-sm font-bold px-1">Ville</label><input class="eb-input" id="eb-ville" placeholder="Paris" type="text"/></div>
+    </div>
+
+    <!-- SECTION CLIENTE -->
+    <div id="eb-section-cliente" class="mb-8">
+      <label class="text-sm font-bold px-1 block mb-3">Centres d'intérêt</label>
+      <div class="flex flex-wrap gap-2" id="eb-chips">
+        <span class="eb-chip" onclick="this.classList.toggle('on')">Maquillage</span>
+        <span class="eb-chip" onclick="this.classList.toggle('on')">Coiffure afro</span>
+        <span class="eb-chip" onclick="this.classList.toggle('on')">Soins naturels</span>
+        <span class="eb-chip" onclick="this.classList.toggle('on')">Skincare</span>
+        <span class="eb-chip" onclick="this.classList.toggle('on')">Manucure</span>
+        <span class="eb-chip" onclick="this.classList.toggle('on')">Massage</span>
+        <span class="eb-chip" onclick="this.classList.toggle('on')">Bien-être</span>
+        <span class="eb-chip" onclick="this.classList.toggle('on')">Parfums</span>
+        <span class="eb-chip" onclick="this.classList.toggle('on')">Tutoriels beauté</span>
+        <span class="eb-chip" onclick="this.classList.toggle('on')">Mode &amp; style</span>
+      </div>
+      <p class="text-[11px] text-slate-400 px-1 mt-2">Sélectionnez une ou plusieurs options qui vous correspondent.</p>
+    </div>
+
+    <!-- SECTION PRO -->
+    <div id="eb-section-pro" style="display:none" class="mb-8">
+      <div class="flex flex-col gap-2">
+        <label class="text-sm font-bold px-1">Spécialité</label>
+        <select class="eb-input" id="eb-specialite">
+          <option value="">Sélectionner votre métier...</option>
+          <option>Coiffure</option><option>Coiffure afro &amp; texturée</option>
+          <option>Maquillage</option><option>Esthétique</option>
+          <option>Soins de la peau</option><option>Nail Art &amp; Ongles</option>
+          <option>Barbier</option><option>Microblading &amp; Sourcils</option>
+          <option>Extensions de cils</option><option>Soins capillaires</option>
+          <option>Massage &amp; Bien-être</option><option>Autre</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-3 mb-8">
+      <input class="rounded border-slate-300 text-primary focus:ring-primary w-4 h-4 cursor-pointer" id="eb-consent" type="checkbox"/>
+      <label class="text-sm text-slate-500 cursor-pointer" for="eb-consent">J'accepte de recevoir des informations sur le lancement d'EdeneBeauty.</label>
+    </div>
+
+    <button id="eb-submit" onclick="ebSubmit()"
+      class="w-full bg-primary text-white rounded-xl h-14 text-lg font-bold shadow-xl shadow-primary/30 hover:scale-[1.02] transition-transform flex items-center justify-center gap-3"
+      type="button">
+      <span id="eb-btn-txt">Valider ma pré-inscription</span>
+      <div class="eb-spinner" id="eb-spinner"></div>
+    </button>
+  </div>
+
+  <!-- SUCCÈS -->
+  <div id="eb-success" style="display:none" class="text-center py-10">
+    <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+      <span class="material-symbols-outlined text-green-600 text-4xl">check_circle</span>
+    </div>
+    <h3 class="text-2xl font-black text-slate-900 mb-3">Inscription confirmée !</h3>
+    <p class="text-slate-500 text-lg mb-2">Bienvenue dans la communauté EdeneBeauty.</p>
+    <p class="text-slate-400 text-sm">Nous vous contacterons dès l'ouverture de la plateforme.</p>
+  </div>
+
 </div>
 </div>
 </section>
-<!-- Vision Section -->
+
 <section class="py-24 bg-primary text-white text-center">
 <div class="max-w-4xl mx-auto px-6">
 <h2 class="text-4xl font-black mb-8 leading-tight">Une vision portée par l'excellence et l'inclusivité.</h2>
-<p class="text-xl text-white/80 leading-relaxed mb-12">
-                            Nous croyons que chaque femme mérite une expérience beauté qui respecte son identité, son temps et ses envies. EdeneBeauty est plus qu'une plateforme, c'est un mouvement vers une beauté libre et responsable.
-                        </p>
+<p class="text-xl text-white/80 leading-relaxed mb-12">Nous croyons que chaque femme mérite une expérience beauté qui respecte son identité, son temps et ses envies. EdeneBeauty est plus qu'une plateforme, c'est un mouvement vers une beauté libre et responsable.</p>
 <div class="flex justify-center gap-12">
-<div class="text-center">
-<div class="text-3xl font-black mb-2">100%</div>
-<div class="text-sm text-white/60">Sécurisé</div>
-</div>
-<div class="text-center">
-<div class="text-3xl font-black mb-2">24/7</div>
-<div class="text-sm text-white/60">Support</div>
-</div>
-<div class="text-center">
-<div class="text-3xl font-black mb-2">+50</div>
-<div class="text-sm text-white/60">Experts</div>
-</div>
+<div class="text-center"><div class="text-3xl font-black mb-2">100%</div><div class="text-sm text-white/60">Sécurisé</div></div>
+<div class="text-center"><div class="text-3xl font-black mb-2">24/7</div><div class="text-sm text-white/60">Support</div></div>
+<div class="text-center"><div class="text-3xl font-black mb-2">+50</div><div class="text-sm text-white/60">Experts</div></div>
 </div>
 </div>
 </section>
+
 </main>
+
 <footer class="bg-white dark:bg-slate-900 border-t border-primary/5 py-12 px-6 lg:px-20">
 <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12">
 <div class="space-y-6 max-w-sm">
 <div class="flex items-center gap-3">
-<div class="text-primary">
-<svg class="size-6" fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-<path clip-rule="evenodd" d="M47.2426 24L24 47.2426L0.757355 24L24 0.757355L47.2426 24ZM12.2426 21H35.7574L24 9.24264L12.2426 21Z" fill="currentColor" fill-rule="evenodd"></path>
-</svg>
-</div>
+<div class="text-primary"><svg class="size-6" fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M47.2426 24L24 47.2426L0.757355 24L24 0.757355L47.2426 24ZM12.2426 21H35.7574L24 9.24264L12.2426 21Z" fill="currentColor" fill-rule="evenodd"></path></svg></div>
 <h2 class="text-primary text-lg font-extrabold">EdeneBeauty</h2>
 </div>
-<p class="text-slate-500 text-sm leading-relaxed">
-                            La plateforme de référence pour tous vos besoins beauté. Excellence, innovation et passion au service de votre éclat.
-                        </p>
+<p class="text-slate-500 text-sm leading-relaxed">La plateforme de référence pour tous vos besoins beauté. Excellence, innovation et passion au service de votre éclat.</p>
 <div class="flex gap-4">
-<a class="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center hover:bg-primary/10 transition-colors" href="#">
-<span class="material-symbols-outlined text-primary">public</span>
-</a>
-<a class="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center hover:bg-primary/10 transition-colors" href="#">
-<span class="material-symbols-outlined text-primary">groups</span>
-</a>
-<a class="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center hover:bg-primary/10 transition-colors" href="#">
-<span class="material-symbols-outlined text-primary">chat_bubble</span>
-</a>
+<a class="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center hover:bg-primary/10 transition-colors" href="#"><span class="material-symbols-outlined text-primary">public</span></a>
+<a class="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center hover:bg-primary/10 transition-colors" href="#"><span class="material-symbols-outlined text-primary">groups</span></a>
+<a class="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center hover:bg-primary/10 transition-colors" href="#"><span class="material-symbols-outlined text-primary">chat_bubble</span></a>
 </div>
 </div>
 <div class="grid grid-cols-2 lg:grid-cols-3 gap-12">
-<div class="space-y-4">
-<h5 class="font-bold text-slate-900 dark:text-white uppercase text-xs tracking-widest">Navigation</h5>
-<ul class="space-y-2 text-sm text-slate-500">
-<li><a class="hover:text-primary" href="#concept">Concept</a></li>
-<li><a class="hover:text-primary" href="#avantages">Avantages</a></li>
-<li><a class="hover:text-primary" href="#inscription">Pre-inscription</a></li>
-</ul>
-</div>
-<div class="space-y-4">
-<h5 class="font-bold text-slate-900 dark:text-white uppercase text-xs tracking-widest">Légal</h5>
-<ul class="space-y-2 text-sm text-slate-500">
-<li><a class="hover:text-primary" href="#">Mentions Légales</a></li>
-<li><a class="hover:text-primary" href="#">CGU</a></li>
-<li><a class="hover:text-primary" href="#">Confidentialité</a></li>
-</ul>
-</div>
-<div class="space-y-4">
-<h5 class="font-bold text-slate-900 dark:text-white uppercase text-xs tracking-widest">Bientôt disponible</h5>
-<ul class="space-y-2 text-sm text-slate-500">
-<li class="flex items-center gap-2">
-<span class="material-symbols-outlined text-[16px]">smartphone</span> App iOS
-                                </li>
-<li class="flex items-center gap-2">
-<span class="material-symbols-outlined text-[16px]">smartphone</span> App Android
-                                </li>
-</ul>
+<div class="space-y-4"><h5 class="font-bold text-slate-900 dark:text-white uppercase text-xs tracking-widest">Navigation</h5><ul class="space-y-2 text-sm text-slate-500"><li><a class="hover:text-primary" href="#concept">Concept</a></li><li><a class="hover:text-primary" href="#avantages">Avantages</a></li><li><a class="hover:text-primary" href="#inscription">Pre-inscription</a></li></ul></div>
+<div class="space-y-4"><h5 class="font-bold text-slate-900 dark:text-white uppercase text-xs tracking-widest">Légal</h5><ul class="space-y-2 text-sm text-slate-500"><li><a class="hover:text-primary" href="#">Mentions Légales</a></li><li><a class="hover:text-primary" href="#">CGU</a></li><li><a class="hover:text-primary" href="#">Confidentialité</a></li></ul></div>
+<div class="space-y-4"><h5 class="font-bold text-slate-900 dark:text-white uppercase text-xs tracking-widest">Bientôt disponible</h5><ul class="space-y-2 text-sm text-slate-500"><li class="flex items-center gap-2"><span class="material-symbols-outlined text-[16px]">smartphone</span> App iOS</li><li class="flex items-center gap-2"><span class="material-symbols-outlined text-[16px]">smartphone</span> App Android</li></ul></div>
 </div>
 </div>
-</div>
-<div class="max-w-7xl mx-auto mt-16 pt-8 border-t border-slate-100 dark:border-slate-800 text-center text-sm text-slate-400">
-                    © 2024 EdeneBeauty. Tous droits réservés.
-                </div>
+<div class="max-w-7xl mx-auto mt-16 pt-8 border-t border-slate-100 dark:border-slate-800 text-center text-sm text-slate-400">© 2024 EdeneBeauty. Tous droits réservés.</div>
 </footer>
+
 </div>
 </div>
+
 <script>
-function switchTab(type) {
-    const clientBtn = document.getElementById('tab-clientes');
-    const proBtn = document.getElementById('tab-pros');
-    const proFields = document.getElementById('pro-fields');
-    
-    if (type === 'pros') {
-        proBtn.classList.add('bg-primary', 'text-white', 'shadow-lg');
-        proBtn.classList.remove('text-slate-500', 'hover:text-primary');
-        clientBtn.classList.remove('bg-primary', 'text-white', 'shadow-lg');
-        clientBtn.classList.add('text-slate-500', 'hover:text-primary');
-        proFields.classList.remove('hidden');
+(function() {
+  var ebTab = 'cliente';
+
+  window.ebSwitch = function(t) {
+    ebTab = t;
+    document.getElementById('eb-tab-cliente').className = t === 'cliente'
+      ? 'eb-tab-on px-8 py-3 rounded-xl text-sm font-bold transition-all'
+      : 'eb-tab-off px-8 py-3 rounded-xl text-sm font-bold transition-all';
+    document.getElementById('eb-tab-pro').className = t === 'pro'
+      ? 'eb-tab-on px-8 py-3 rounded-xl text-sm font-bold transition-all'
+      : 'eb-tab-off px-8 py-3 rounded-xl text-sm font-bold transition-all';
+    document.getElementById('eb-section-cliente').style.display = t === 'cliente' ? 'block' : 'none';
+    document.getElementById('eb-section-pro').style.display     = t === 'pro'     ? 'block' : 'none';
+  };
+
+  function showErr(msg) {
+    var e = document.getElementById('eb-error');
+    e.textContent = msg; e.style.display = 'block';
+    e.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+  function hideErr() { document.getElementById('eb-error').style.display = 'none'; }
+
+  window.ebSubmit = async function() {
+    hideErr();
+    var nom     = document.getElementById('eb-nom').value.trim();
+    var prenom  = document.getElementById('eb-prenom').value.trim();
+    var email   = document.getElementById('eb-email').value.trim();
+    var tel     = document.getElementById('eb-tel').value.trim();
+    var pays    = document.getElementById('eb-pays').value;
+    var ville   = document.getElementById('eb-ville').value.trim();
+    var consent = document.getElementById('eb-consent').checked;
+
+    if (!nom)    return showErr('Veuillez renseigner votre nom.');
+    if (!prenom) return showErr('Veuillez renseigner votre prénom.');
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showErr('Adresse email invalide.');
+    if (!consent) return showErr('Veuillez accepter de recevoir nos informations.');
+
+    var body = { nom:nom, prenom:prenom, email:email, telephone:tel||null, pays:pays||null, ville:ville||null, type_profil:ebTab, source:'landing_page' };
+
+    if (ebTab === 'pro') {
+      var spec = document.getElementById('eb-specialite').value;
+      if (!spec) return showErr('Veuillez sélectionner votre spécialité.');
+      body.specialite = spec;
     } else {
-        clientBtn.classList.add('bg-primary', 'text-white', 'shadow-lg');
-        clientBtn.classList.remove('text-slate-500', 'hover:text-primary');
-        proBtn.classList.remove('bg-primary', 'text-white', 'shadow-lg');
-        proBtn.classList.add('text-slate-500', 'hover:text-primary');
-        proFields.classList.add('hidden');
+      body.centres_interet = Array.from(document.querySelectorAll('#eb-chips .eb-chip.on')).map(function(c){ return c.textContent.trim(); });
     }
-}
 
-function toggleSpecialty(btn) {
-    const specialty = btn.textContent.trim();
-    const hiddenInput = document.getElementById('selected-specialties');
-    let selected = hiddenInput.value ? hiddenInput.value.split(',') : [];
+    var btn = document.getElementById('eb-submit');
+    var txt = document.getElementById('eb-btn-txt');
+    var spin = document.getElementById('eb-spinner');
+    btn.disabled = true; txt.textContent = 'Envoi en cours...'; spin.classList.add('show');
 
-    if (selected.includes(specialty)) {
-        selected = selected.filter(s => s !== specialty);
-        btn.classList.remove('bg-primary', 'text-white');
-        btn.classList.add('bg-white', 'dark:bg-slate-800', 'text-primary', 'dark:text-slate-300');
-    } else {
-        selected.push(specialty);
-        btn.classList.add('bg-primary', 'text-white');
-        btn.classList.remove('bg-white', 'dark:bg-slate-800', 'text-primary', 'dark:text-slate-300');
+    try {
+      var res  = await fetch('https://api.edeneapp.com/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      var data = await res.json();
+      if (res.ok) {
+        document.getElementById('eb-form-box').style.display = 'none';
+        document.getElementById('eb-success').style.display  = 'block';
+      } else if (res.status === 409) {
+        showErr(data.error || 'Cette adresse email est déjà inscrite.');
+      } else {
+        showErr(data.error || 'Une erreur est survenue. Veuillez réessayer.');
+      }
+    } catch(err) {
+      showErr('Impossible de joindre le serveur. Veuillez réessayer.');
+    } finally {
+      btn.disabled = false; txt.textContent = 'Valider ma pré-inscription'; spin.classList.remove('show');
     }
-    hiddenInput.value = selected.join(',');
-}
+  };
+})();
+</script>
 
-function handleFormSubmit(e) {
-    e.preventDefault();
-    alert('Merci ! Votre pré-inscription a bien été enregistrée. Vous recevrez bientôt des nouvelles d\'EdeneBeauty.');
-    document.getElementById('registration-form').reset();
-    // Reset UI states
-    const buttons = document.querySelectorAll('#inscription .flex-wrap button');
-    buttons.forEach(b => {
-        if (b.textContent.trim() !== 'Maquillage') {
-             b.classList.remove('bg-primary', 'text-white');
-             b.classList.add('bg-white', 'dark:bg-slate-800', 'text-primary', 'dark:text-slate-300');
-        } else {
-             b.classList.add('bg-primary', 'text-white');
-             b.classList.remove('bg-white', 'dark:bg-slate-800', 'text-primary', 'dark:text-slate-300');
-        }
-    });
-    document.getElementById('selected-specialties').value = 'Maquillage';
-    switchTab('clientes');
-}
-</script></body></html>
+</body></html>
