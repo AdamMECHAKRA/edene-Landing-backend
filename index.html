@@ -34,7 +34,7 @@
         }
     </script>
 <style>
-        .eb-tab-on  { background:#1d2a67 !important; color:#fff !important; box-shadow:0 4px 15px rgba(29,42,103,0.3); }
+.eb-tab-on  { background:#1d2a67 !important; color:#fff !important; box-shadow:0 4px 15px rgba(29,42,103,0.3); }
         .eb-tab-off { background:transparent !important; color:#94a3b8 !important; }
         .eb-chip { display:inline-block; padding:8px 18px; border-radius:9999px; border:1.5px solid rgba(29,42,103,0.2); background:#fff; color:#1d2a67; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.18s; user-select:none; font-family:'Manrope',sans-serif; }
         .eb-chip.on { background:#1d2a67 !important; color:#fff !important; border-color:#1d2a67 !important; }
@@ -50,97 +50,11 @@
 
 **MODIFICATION 2 — Cherche cette ligne exacte :**
 ```
-<!-- Formulaire Pré-inscription -->
-<section class="py-24 bg-background-light dark:bg-slate-800" id="inscription">
-<div class="max-w-4xl mx-auto px-6 lg:px-20">
-<div class="bg-white dark:bg-slate-900 rounded-[2.5rem] shadow-2xl p-8 lg:p-16 border border-primary/5">
-  <div id="eb-form-box">
-    <div class="text-center mb-12">
-      <h2 class="text-3xl font-black mb-4">Pré-inscription</h2>
-      <p class="text-slate-500">Soyez parmi les premières à découvrir EdeneBeauty. Remplissez le formulaire ci-dessous pour être informée du lancement.</p>
-    </div>
-    <div class="eb-error" id="eb-error"></div>
-    <div class="flex justify-center mb-10">
-      <div class="inline-flex p-1 bg-secondary dark:bg-slate-800 rounded-2xl shadow-inner gap-1">
-        <button id="eb-tab-cliente" class="eb-tab-on px-8 py-3 rounded-xl text-sm font-bold transition-all" onclick="ebSwitch('cliente')" type="button">Clientes</button>
-        <button id="eb-tab-pro" class="eb-tab-off px-8 py-3 rounded-xl text-sm font-bold transition-all" onclick="ebSwitch('pro')" type="button">Professionnelle</button>
-      </div>
-    </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-      <div class="flex flex-col gap-2"><label class="text-sm font-bold px-1">Nom</label><input class="eb-input" id="eb-nom" placeholder="Martin" type="text"/></div>
-      <div class="flex flex-col gap-2"><label class="text-sm font-bold px-1">Prénom</label><input class="eb-input" id="eb-prenom" placeholder="Amara" type="text"/></div>
-    </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-      <div class="flex flex-col gap-2"><label class="text-sm font-bold px-1">E-mail</label><input class="eb-input" id="eb-email" placeholder="jane@example.com" type="email"/></div>
-      <div class="flex flex-col gap-2"><label class="text-sm font-bold px-1">Téléphone</label><input class="eb-input" id="eb-tel" placeholder="+33 6 00 00 00 00" type="tel"/></div>
-    </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-      <div class="flex flex-col gap-2"><label class="text-sm font-bold px-1">Pays</label>
-        <select class="eb-input" id="eb-pays">
-          <option value="">Sélectionner...</option>
-          <option>France</option><option>Belgique</option><option>Suisse</option>
-          <option>Canada</option><option>Côte d'Ivoire</option><option>Sénégal</option>
-          <option>Cameroun</option><option>Maroc</option><option>Tunisie</option>
-          <option>Algérie</option><option>Autre</option>
-        </select>
-      </div>
-      <div class="flex flex-col gap-2"><label class="text-sm font-bold px-1">Ville</label><input class="eb-input" id="eb-ville" placeholder="Paris" type="text"/></div>
-    </div>
-    <div id="eb-section-cliente" class="mb-8">
-      <label class="text-sm font-bold px-1 block mb-3">Centres d'intérêt</label>
-      <div class="flex flex-wrap gap-2" id="eb-chips">
-        <span class="eb-chip" onclick="this.classList.toggle('on')">Maquillage</span>
-        <span class="eb-chip" onclick="this.classList.toggle('on')">Coiffure afro</span>
-        <span class="eb-chip" onclick="this.classList.toggle('on')">Soins naturels</span>
-        <span class="eb-chip" onclick="this.classList.toggle('on')">Skincare</span>
-        <span class="eb-chip" onclick="this.classList.toggle('on')">Manucure</span>
-        <span class="eb-chip" onclick="this.classList.toggle('on')">Massage</span>
-        <span class="eb-chip" onclick="this.classList.toggle('on')">Bien-être</span>
-        <span class="eb-chip" onclick="this.classList.toggle('on')">Parfums</span>
-        <span class="eb-chip" onclick="this.classList.toggle('on')">Tutoriels beauté</span>
-      </div>
-      <p class="text-[11px] text-slate-400 px-1 mt-2">Sélectionnez une ou plusieurs options qui vous correspondent.</p>
-    </div>
-    <div id="eb-section-pro" style="display:none" class="mb-8">
-      <div class="flex flex-col gap-2"><label class="text-sm font-bold px-1">Spécialité</label>
-        <select class="eb-input" id="eb-specialite">
-          <option value="">Sélectionner votre métier...</option>
-          <option>Coiffure</option><option>Coiffure afro &amp; texturée</option>
-          <option>Maquillage</option><option>Esthétique</option>
-          <option>Soins de la peau</option><option>Nail Art &amp; Ongles</option>
-          <option>Barbier</option><option>Microblading &amp; Sourcils</option>
-          <option>Extensions de cils</option><option>Soins capillaires</option>
-          <option>Massage &amp; Bien-être</option><option>Autre</option>
-        </select>
-      </div>
-    </div>
-    <div class="flex items-center gap-3 mb-8">
-      <input class="rounded border-slate-300 text-primary focus:ring-primary w-4 h-4 cursor-pointer" id="eb-consent" type="checkbox"/>
-      <label class="text-sm text-slate-500 cursor-pointer" for="eb-consent">J'accepte de recevoir des informations sur le lancement d'EdeneBeauty.</label>
-    </div>
-    <button id="eb-submit" onclick="ebSubmit()" class="w-full bg-primary text-white rounded-xl h-14 text-lg font-bold shadow-xl shadow-primary/30 hover:scale-[1.02] transition-transform flex items-center justify-center gap-3" type="button">
-      <span id="eb-btn-txt">Valider ma pré-inscription</span>
-      <div class="eb-spinner" id="eb-spinner"></div>
-    </button>
-  </div>
-  <div id="eb-success" style="display:none" class="text-center py-10">
-    <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6"><span class="material-symbols-outlined text-green-600 text-4xl">check_circle</span></div>
-    <h3 class="text-2xl font-black text-slate-900 mb-3">Inscription confirmée !</h3>
-    <p class="text-slate-500 text-lg mb-2">Bienvenue dans la communauté EdeneBeauty.</p>
-    <p class="text-slate-400 text-sm">Nous vous contacterons dès l'ouverture de la plateforme.</p>
-  </div>
-</div>
-</div>
+<!-- Consolidated Registration Form from SCREEN_6 -->
+```
+**Supprime tout depuis cette ligne jusqu'à (et incluant) :**
+```
 </section>
-<!-- Vision Section -->
-```
-
----
-
-**MODIFICATION 3 — Cherche cette ligne exacte :**
-```
-<script>
-function switchTab(type) {
 <!-- Vision Section -->
         body {
             font-family: 'Manrope', sans-serif;
@@ -209,7 +123,7 @@ function switchTab(type) {
 </div>
 <div class="flex-1 w-full max-w-xl">
 <div class="relative rounded-3xl overflow-hidden shadow-2xl border-8 border-white dark:border-slate-800 rotate-2">
-<img alt="Inclusive Beauty Excellence" class="w-full h-auto object-cover aspect-[4/5]" src="https://lh3.googleusercontent.com/aida/ADBb0uhgd8I1bzpqfBibbvigB3Qb8FcD7TvRO5_V-xcTvjb2FXKbqoO5ENQRERT_Jr3U0V9ZHyYnc4wjmS1aaUhp7MHpkO3h7AYg9BvNzwX6utAYzIKaWMknTKmTfZqp3w5G3g66qR_zfnF6S76AayvGq7Ld-0Jdk4DUNOpRBbmZYM7rhNSuvF4Wvtnq1Xr-RHE32GNPpE7gKI5X90D3attrbrUmTq6--t8QnGAHwQYihg_JusqL6jVXW9-D4vQlTYcxisHqafOiBY8Tng"/>
+<img alt="Beauty Excellence" class="w-full h-auto object-cover aspect-[4/5]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_m1QKRtC7jT57k77TIntq_SzQrRHqz7l9xD_DNBlOpe2pvAfIIryow9_1dbTueD8VI40t6xDG7YIlOdu-8mmbSvad5O2XhAato5wqs4KWkCd6110-cGuGSQHBJAYpT4akKap71sClz4dqeNRk9bG6wuO8qRjwshixr8uGz1jg26IqD7ZXA3fgtiYhZBL2P5McshTQXZwCutGQZL-CCFDOILkSoCIrE1hmZX7jYVwmVCx296yMdRi_uDR2PGS9O9netww2hFhGFNS6"/>
 <div class="absolute bottom-6 left-6 right-6 bg-white/90 dark:bg-slate-900/90 backdrop-blur p-6 rounded-2xl shadow-xl">
 <div class="flex items-center gap-4">
 <div class="flex -space-x-3">
@@ -468,12 +382,12 @@ function switchTab(type) {
 </div>
 <div class="flex-1 grid grid-cols-2 gap-4">
 <div class="space-y-4 pt-12">
-<img class="rounded-2xl shadow-lg w-full aspect-square object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKlHoNgnh6wK7QWOHUe6Pe8e8LGahlwyh_KwGnxEOikWo6fSxK1ZPGuXUqjy67F9FisiDzr4K3tU9gKj10kbnaBbotmI14S1qEcEl-8kEQzRqOt-p0AOf67fm0rFq7CXFK7CcZsvq9q_NI5Gi2b9Aol4Ss2NJUpbLpnFt8VtaKUsewh5KD8wOWMPgqtx2ogOg-ZBpdgZYrJZuzVY69SyLfquAqaHFQNYjRQNcaGmSecdNYy9te8EFWUW0THJnup53C10mSHephYKBI"/>
-<img class="rounded-2xl shadow-lg w-full aspect-[3/4] object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCBp3H_4aRhpdqUdKvyl6Q5eBNKK0AG7w1xSRSotk0WVhNOTrsD8Wo_DMFbF4DBrjf0fBig4q2-L6BJz8fUTj6IRGRPjelVlBW9eQ5AA_8K9KjQKkK3qEyEQYdsM1ffsQoxHbOx7LvomopMQJYrtvSYPaQNXDxBJvx1HTRZtxbHoUJRcvysIYSWTmzVOiUI-Yw_imDFBOUh3ldFPkyTU-CylQNDCmvwZ6TN_lHn0DjEA5vUIocqo2PDdbpGBebkiBaN6NYXNRzyJ7DM"/>
+<img class="rounded-2xl shadow-lg w-full aspect-square object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQpGNvtBRUthV8UIyVscdck2QjhtZLsW3UmQM3e7m_-jCtPUeuqRQkwnRSeq-I5ILXrvGE_Dh8AdDUWcH_HiLaSQGgCCGyoFftktsltf2MYl0KAqZHuVO1dT5mf2pkGwfm9gQaAlA8eNx_t0nCwG3h4ivEjf3Qk0YesgTN-DBFLnLV6YuAAaZeYQt13bzMlp1zcqBiK4zgBd8hqVyJPPQ_tiaPqAz_L6warWGswe1j1uNgiXa1158n8Mcrr5mtHHNG0K2ZEknx8z79"/>
+<img class="rounded-2xl shadow-lg w-full aspect-[3/4] object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxs2__GJGnJwSiz6yLHLQJ6wC3g6V7AJosW3TkuAvKFbW8UJV2qcLZUS6pwmk34ZVuH2JeeXTSV2Q9sDdcojfOuu578ZF6Dom3nh4-Hvbp96geiOLTdiv6ze-zMpsVI4qxNnQslmIJAa1wSJDxDCAS8-BsImuXH9AHyArTfnhI7TioySt9nzMGw_MSjDQTREeHBfohpfYgX6mRV7CWGgJZsoQqQ_n_JQLizu4Yx3eyr1hp2aF6fd0ekO5YaR7GwWgrNzPrt4C2o4mk"/>
 </div>
 <div class="space-y-4">
-<img class="rounded-2xl shadow-lg w-full aspect-[3/4] object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVBf9K1h_-ehg6cXb10OWgkmtflLZW2fpA6wWWnszhubruzioD3Kw8u-GeqSCUjscJiLaZAR4aKLUgaCiNCQQBbjzRV2ffMbNHm9HcSBZSUPGBUoHpUuT9TOoQIGRTasXkkIbcYhjHX1WGJtg5BaN7IaJoxnCV9M0gyF1-kKRM01gZeFYM0NSP4m8bLCVQ7qhFwOgtKVYv54K9c44slz0PTcGtnDSr83PJESTaAciFGt_yUbl3vihdMX6Y1kjsKoyHEW3Hud6Fu5Rw"/>
-<img class="rounded-2xl shadow-lg w-full aspect-square object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBENuWXxuq9IdieDMboGfPA0pG6jgQVQm6IVNKinpSapYeAzU2PgA3Qqpky5j0s3VHO28vvE9DRvO4TWENODbJX761yBXrALbG_QtYomU-45fGg0ZkzTsJdfRmBYP_XnNxJczSBAcBl15IWEPB7dnMwqyw4Al7OvPivzO9Qn6kA1vsqriT8MB578GEy5zsVRVgWD7_-2JboQxuMalIVScZnpDv9W2RaynI0G0rW2R2Qzh2JgnLEQupfbrKwQUDFndfv8ffAOF9LqKRD"/>
+<img class="rounded-2xl shadow-lg w-full aspect-[3/4] object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBe4WLiJow8LAjTwqnFMrZ7whLTFKW_Rwhe4JQQbFUbVOn8L2BpQu3uOcMIjs0O5IMgv4wC5nDucN8DE8vIfcp5vlzZiyO43fzEueg9jcmbWl9nWgs8Y-K4S_3VdlB3oy9vp15na7N6oNmXKvjcC3IQeQQQHbeWU857gERFZgyISSG7C5exgLjzN4WJ9GMihjHyUfkbTFRRPJa--fVbcQzlYsifZAFPt5PyviNItIXPWS02O2OIN9-WiE_fLzW8IHdD1E5_UZH29uAk"/>
+<img class="rounded-2xl shadow-lg w-full aspect-square object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDp8LbPQkcJHB8yZEtzzjcEqhW-316AxLGvoXjRU3fg7D-saekDSohP1pMdTiSZ2iKfgCLrxiW5giSeaep6WcHC3dNGgRjr52waFWviOrN9WnJgyZPpuUYKBJ3-_WsLy2lL4bYmT9U6pjpwDcsFPwIP0ed3_kP_CCQIdgv-0-0vkCdwYmhcxm4DEZFcR4NYkTUYGOTUSpZMePhbauI76omSJs42rlQFsiG_iCZzvpvJV0MPLf20S1OpkRefOeOx9gwFd9Z_qXSbeakp"/>
 </div>
 </div>
 </div>
@@ -513,7 +427,7 @@ function switchTab(type) {
 </div>
 <div class="flex flex-col gap-2">
 <label class="text-sm font-bold px-1">Pays</label>
-<input class="rounded-xl border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary focus:border-primary" placeholder="France" type="text"/><div class="hidden md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-8 mt-8 border-t border-primary/5 pt-8" id="pro-fields"><div class="flex flex-col gap-2"><label class="text-sm font-bold px-1">Nom de l'établissement / Salon</label><input class="rounded-xl border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary focus:border-primary" placeholder="Mon Bel Espace" type="text"/></div></div>
+<input class="rounded-xl border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary focus:border-primary" placeholder="France" type="text"/><div class="hidden md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-8 mt-8 border-t border-primary/5 pt-8" id="pro-fields"><div class="flex flex-col gap-2"><label class="text-sm font-bold px-1">Nom de l'établissement / Salon</label><input class="rounded-xl border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary focus:border-primary" placeholder="Mon Bel Espace" type="text"/></div><div class="flex flex-col gap-2"><label class="text-sm font-bold px-1">SIRET</label><input class="rounded-xl border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary focus:border-primary" placeholder="123 456 789 00012" type="text"/></div></div>
 </div>
 <div class="flex flex-col gap-2">
 <label class="text-sm font-bold px-1">Ville</label>
