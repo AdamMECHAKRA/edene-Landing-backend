@@ -393,72 +393,99 @@
 </div>
 </div>
 </section>
-<!-- Consolidated Registration Form from SCREEN_6 -->
+ <!-- Formulaire Pré-inscription -->
 <section class="py-24 bg-background-light dark:bg-slate-800" id="inscription">
 <div class="max-w-4xl mx-auto px-6 lg:px-20">
 <div class="bg-white dark:bg-slate-900 rounded-[2.5rem] shadow-2xl p-8 lg:p-16 border border-primary/5">
-<div class="text-center mb-12">
-<h2 class="text-3xl font-black mb-4">Pré-inscription</h2>
-<p class="text-slate-500">Soyez parmi les premières à découvrir EdeneBeauty. Remplissez le formulaire ci-dessous pour être informée du lancement.</p>
-</div>
-<form class="space-y-8" id="registration-form" onsubmit="handleFormSubmit(event)">
-<div class="flex justify-center mb-10">
-<div class="inline-flex p-1 bg-secondary dark:bg-slate-800 rounded-2xl shadow-inner">
-<button class="px-8 py-3 rounded-xl text-sm font-bold transition-all bg-primary text-white shadow-lg" id="tab-clientes" onclick="switchTab('clientes')" type="button">
-                                            Clientes
-                                        </button>
-<button class="px-8 py-3 rounded-xl text-sm font-bold transition-all text-slate-500 hover:text-primary" id="tab-pros" onclick="switchTab('pros')" type="button">
-                                            Professionnelle
-                                        </button>
-</div>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-<div class="flex flex-col gap-2">
-<label class="text-sm font-bold px-1">Nom &amp; Prénom</label>
-<input class="rounded-xl border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary focus:border-primary" placeholder="Jane Doe" type="text"/>
-</div>
-<div class="flex flex-col gap-2">
-<label class="text-sm font-bold px-1">E-mail</label>
-<input class="rounded-xl border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary focus:border-primary" placeholder="jane@example.com" type="email"/>
-</div>
-<div class="flex flex-col gap-2">
-<label class="text-sm font-bold px-1">Téléphone</label>
-<input class="rounded-xl border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary focus:border-primary" placeholder="+33 6 00 00 00 00" type="tel"/>
-</div>
-<div class="flex flex-col gap-2">
-<label class="text-sm font-bold px-1">Pays</label>
-<input class="rounded-xl border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary focus:border-primary" placeholder="France" type="text"/><div class="hidden md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-8 mt-8 border-t border-primary/5 pt-8" id="pro-fields"><div class="flex flex-col gap-2"><label class="text-sm font-bold px-1">Nom de l'établissement / Salon</label><input class="rounded-xl border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary focus:border-primary" placeholder="Mon Bel Espace" type="text"/></div><div class="flex flex-col gap-2"><label class="text-sm font-bold px-1">SIRET</label><input class="rounded-xl border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary focus:border-primary" placeholder="123 456 789 00012" type="text"/></div></div>
-</div>
-<div class="flex flex-col gap-2">
-<label class="text-sm font-bold px-1">Ville</label>
-<input class="rounded-xl border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary focus:border-primary" placeholder="Paris" type="text"/>
-</div>
-<div class="md:col-span-2 flex flex-col gap-4">
-<label class="text-sm font-bold px-1">Spécialités / Centres d'intérêt</label>
-<!-- Multi-choice tag selector -->
-<div class="flex flex-wrap gap-2">
-<button class="px-4 py-2 rounded-full border border-primary/20 bg-primary text-white text-sm font-semibold transition-all shadow-sm" onclick="toggleSpecialty(this)" type="button">Maquillage</button>
-<button class="px-4 py-2 rounded-full border border-primary/20 bg-white dark:bg-slate-800 text-primary dark:text-slate-300 text-sm font-semibold hover:bg-primary/5 transition-all" onclick="toggleSpecialty(this)" type="button">Coiffure</button>
-<button class="px-4 py-2 rounded-full border border-primary/20 bg-white dark:bg-slate-800 text-primary dark:text-slate-300 text-sm font-semibold hover:bg-primary/5 transition-all" onclick="toggleSpecialty(this)" type="button">Soins du visage</button>
-<button class="px-4 py-2 rounded-full border border-primary/20 bg-white dark:bg-slate-800 text-primary dark:text-slate-300 text-sm font-semibold hover:bg-primary/5 transition-all" onclick="toggleSpecialty(this)" type="button">Manucure</button>
-<button class="px-4 py-2 rounded-full border border-primary/20 bg-white dark:bg-slate-800 text-primary dark:text-slate-300 text-sm font-semibold hover:bg-primary/5 transition-all" onclick="toggleSpecialty(this)" type="button">Massage</button>
-<button class="px-4 py-2 rounded-full border border-primary/20 bg-white dark:bg-slate-800 text-primary dark:text-slate-300 text-sm font-semibold hover:bg-primary/5 transition-all" onclick="toggleSpecialty(this)" type="button">Épilation</button>
-<button class="px-4 py-2 rounded-full border border-primary/20 bg-white dark:bg-slate-800 text-primary dark:text-slate-300 text-sm font-semibold hover:bg-primary/5 transition-all" onclick="toggleSpecialty(this)" type="button">Bien-être</button>
-</div>
-<p class="text-[10px] text-slate-400 px-1">Sélectionnez une ou plusieurs options qui vous correspondent.</p>
-</div>
-</div>
-<div class="flex items-center gap-3">
-<input class="rounded border-slate-300 text-primary focus:ring-primary" id="terms" type="checkbox"/>
-<label class="text-sm text-slate-500" for="terms">J'accepte de recevoir des informations sur le lancement d'EdeneBeauty.</label>
-</div>
-<button class="w-full bg-primary text-white rounded-xl h-14 text-lg font-bold shadow-xl shadow-primary/30 hover:scale-[1.02] transition-transform" type="submit">
-                                    Valider ma pré-inscription
-                                </button>
-<input id="selected-specialties" name="specialties" type="hidden" value="Maquillage"/></form>
+  <div id="eb-form-box">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl font-black mb-4">Pré-inscription</h2>
+      <p class="text-slate-500">Soyez parmi les premières à découvrir EdeneBeauty. Remplissez le formulaire ci-dessous pour être informée du lancement.</p>
+    </div>
+    <div class="eb-error" id="eb-error"></div>
+    <div class="flex justify-center mb-10">
+      <div class="inline-flex p-1 bg-secondary dark:bg-slate-800 rounded-2xl shadow-inner gap-1">
+        <button id="eb-tab-cliente" class="eb-tab-on px-8 py-3 rounded-xl text-sm font-bold transition-all" onclick="ebSwitch('cliente')" type="button">Clientes</button>
+        <button id="eb-tab-pro" class="eb-tab-off px-8 py-3 rounded-xl text-sm font-bold transition-all" onclick="ebSwitch('pro')" type="button">Professionnelle</button>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+      <div class="flex flex-col gap-2"><label class="text-sm font-bold px-1">Nom</label><input class="eb-input" id="eb-nom" placeholder="Martin" type="text"/></div>
+      <div class="flex flex-col gap-2"><label class="text-sm font-bold px-1">Prénom</label><input class="eb-input" id="eb-prenom" placeholder="Amara" type="text"/></div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+      <div class="flex flex-col gap-2"><label class="text-sm font-bold px-1">E-mail</label><input class="eb-input" id="eb-email" placeholder="jane@example.com" type="email"/></div>
+      <div class="flex flex-col gap-2"><label class="text-sm font-bold px-1">Téléphone</label><input class="eb-input" id="eb-tel" placeholder="+33 6 00 00 00 00" type="tel"/></div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+      <div class="flex flex-col gap-2"><label class="text-sm font-bold px-1">Pays</label>
+        <select class="eb-input" id="eb-pays">
+          <option value="">Sélectionner...</option>
+          <option>France</option><option>Belgique</option><option>Suisse</option>
+          <option>Canada</option><option>Côte d'Ivoire</option><option>Sénégal</option>
+          <option>Cameroun</option><option>Maroc</option><option>Tunisie</option>
+          <option>Algérie</option><option>Autre</option>
+        </select>
+      </div>
+      <div class="flex flex-col gap-2"><label class="text-sm font-bold px-1">Ville</label><input class="eb-input" id="eb-ville" placeholder="Paris" type="text"/></div>
+    </div>
+    <div id="eb-section-cliente" class="mb-8">
+      <label class="text-sm font-bold px-1 block mb-3">Centres d'intérêt</label>
+      <div class="flex flex-wrap gap-2" id="eb-chips">
+        <span class="eb-chip" onclick="this.classList.toggle('on')">Maquillage</span>
+        <span class="eb-chip" onclick="this.classList.toggle('on')">Coiffure afro</span>
+        <span class="eb-chip" onclick="this.classList.toggle('on')">Soins naturels</span>
+        <span class="eb-chip" onclick="this.classList.toggle('on')">Skincare</span>
+        <span class="eb-chip" onclick="this.classList.toggle('on')">Manucure</span>
+        <span class="eb-chip" onclick="this.classList.toggle('on')">Massage</span>
+        <span class="eb-chip" onclick="this.classList.toggle('on')">Bien-être</span>
+        <span class="eb-chip" onclick="this.classList.toggle('on')">Parfums</span>
+        <span class="eb-chip" onclick="this.classList.toggle('on')">Tutoriels beauté</span>
+      </div>
+      <p class="text-[11px] text-slate-400 px-1 mt-2">Sélectionnez une ou plusieurs options qui vous correspondent.</p>
+    </div>
+    <div id="eb-section-pro" style="display:none" class="mb-8">
+      <div class="flex flex-col gap-2"><label class="text-sm font-bold px-1">Spécialité</label>
+        <select class="eb-input" id="eb-specialite">
+          <option value="">Sélectionner votre métier...</option>
+          <option>Coiffure</option><option>Coiffure afro &amp; texturée</option>
+          <option>Maquillage</option><option>Esthétique</option>
+          <option>Soins de la peau</option><option>Nail Art &amp; Ongles</option>
+          <option>Barbier</option><option>Microblading &amp; Sourcils</option>
+          <option>Extensions de cils</option><option>Soins capillaires</option>
+          <option>Massage &amp; Bien-être</option><option>Autre</option>
+        </select>
+      </div>
+    </div>
+    <div class="flex items-center gap-3 mb-8">
+      <input class="rounded border-slate-300 text-primary focus:ring-primary w-4 h-4 cursor-pointer" id="eb-consent" type="checkbox"/>
+      <label class="text-sm text-slate-500 cursor-pointer" for="eb-consent">J'accepte de recevoir des informations sur le lancement d'EdeneBeauty.</label>
+    </div>
+    <button id="eb-submit" onclick="ebSubmit()" class="w-full bg-primary text-white rounded-xl h-14 text-lg font-bold shadow-xl shadow-primary/30 hover:scale-[1.02] transition-transform flex items-center justify-center gap-3" type="button">
+      <span id="eb-btn-txt">Valider ma pré-inscription</span>
+      <div class="eb-spinner" id="eb-spinner"></div>
+    </button>
+  </div>
+  <div id="eb-success" style="display:none" class="text-center py-10">
+    <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6"><span class="material-symbols-outlined text-green-600 text-4xl">check_circle</span></div>
+    <h3 class="text-2xl font-black text-slate-900 mb-3">Inscription confirmée !</h3>
+    <p class="text-slate-500 text-lg mb-2">Bienvenue dans la communauté EdeneBeauty.</p>
+    <p class="text-slate-400 text-sm">Nous vous contacterons dès l'ouverture de la plateforme.</p>
+  </div>
 </div>
 </div>
 </section>
+<!-- Vision Section -->
+```
+
+---
+
+### MODIFICATION 3 — Remplacer le script
+
+**Cherche** :
+```
+<script>
+function switchTab(type) {       
 <!-- Vision Section -->
 <section class="py-24 bg-primary text-white text-center">
 <div class="max-w-4xl mx-auto px-6">
