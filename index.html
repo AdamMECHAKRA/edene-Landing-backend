@@ -34,6 +34,28 @@
         }
     </script>
 <style>
+        .eb-tab-on  { background:#1d2a67 !important; color:#fff !important; box-shadow:0 4px 15px rgba(29,42,103,0.3); }
+        .eb-tab-off { background:transparent !important; color:#94a3b8 !important; }
+        .eb-chip { display:inline-block; padding:8px 18px; border-radius:9999px; border:1.5px solid rgba(29,42,103,0.2); background:#fff; color:#1d2a67; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.18s; user-select:none; font-family:'Manrope',sans-serif; }
+        .eb-chip.on { background:#1d2a67 !important; color:#fff !important; border-color:#1d2a67 !important; }
+        .eb-input { width:100%; border:1.5px solid #e2e8f0; border-radius:0.75rem; padding:12px 16px; font-size:14px; font-family:'Manrope',sans-serif; outline:none; color:#0f172a; background:#fff; transition:border-color 0.2s; box-sizing:border-box; }
+        .eb-input:focus { border-color:#1d2a67; box-shadow:0 0 0 3px rgba(29,42,103,0.1); }
+        .eb-error { background:#fef2f2; border:1px solid #fecaca; color:#dc2626; border-radius:0.75rem; padding:10px 14px; font-size:13px; margin-bottom:16px; display:none; }
+        .eb-spinner { width:18px; height:18px; border:2px solid rgba(255,255,255,0.4); border-top-color:#fff; border-radius:50%; animation:eb-spin 0.7s linear infinite; display:none; }
+        .eb-spinner.show { display:inline-block; }
+        @keyframes eb-spin { to { transform:rotate(360deg); } }
+```
+
+---
+
+**MODIFICATION 2 — Cherche cette ligne exacte :**
+```
+<!-- Consolidated Registration Form from SCREEN_6 -->
+```
+**Supprime tout depuis cette ligne jusqu'à (et incluant) :**
+```
+</section>
+<!-- Vision Section -->
         body {
             font-family: 'Manrope', sans-serif;
         }
