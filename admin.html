@@ -140,7 +140,41 @@ tr:hover td{background:rgba(250,246,240,0.5);}
 </style>
 </head>
 <body>
-
+<!-- LOGIN ADMIN -->
+<div id="login-screen" style="position:fixed;inset:0;background:#1A1208;display:flex;align-items:center;justify-content:center;z-index:9999;">
+  <div style="background:#fff;border-radius:16px;padding:40px 48px;width:360px;text-align:center;box-shadow:0 24px 60px rgba(0,0,0,0.4);">
+    <p style="font-family:Georgia,serif;font-size:22px;font-weight:300;letter-spacing:3px;color:#C9A96E;margin:0 0 6px;">EdeneBeauty</p>
+    <p style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#6B5C45;margin:0 0 28px;">Admin Panel</p>
+    <div id="login-error" style="display:none;background:#fef2f2;border:1px solid #fecaca;color:#dc2626;border-radius:8px;padding:8px 12px;font-size:13px;margin-bottom:16px;"></div>
+    <input id="login-pwd" type="password" placeholder="Mot de passe"
+      style="width:100%;border:1.5px solid #e2e8f0;border-radius:10px;padding:11px 14px;font-size:14px;outline:none;box-sizing:border-box;margin-bottom:14px;font-family:'DM Sans',sans-serif;"
+      onkeydown="if(event.key==='Enter')doLogin()"/>
+    <button onclick="doLogin()"
+      style="width:100%;background:#1A1208;color:#C9A96E;border:none;border-radius:10px;padding:13px;font-size:14px;font-weight:600;cursor:pointer;letter-spacing:1px;">
+      Accéder au dashboard
+    </button>
+  </div>
+</div>
+<script>
+(function(){
+  var PWD = 'Boukhadra2026%';
+  if(sessionStorage.getItem('eb-admin-auth')==='1'){
+    document.addEventListener('DOMContentLoaded',function(){ document.getElementById('login-screen').style.display='none'; });
+  }
+  window.doLogin = function(){
+    var v = document.getElementById('login-pwd').value;
+    if(v === PWD){
+      sessionStorage.setItem('eb-admin-auth','1');
+      document.getElementById('login-screen').style.display='none';
+    } else {
+      var e = document.getElementById('login-error');
+      e.textContent='Mot de passe incorrect.';
+      e.style.display='block';
+      document.getElementById('login-pwd').value='';
+    }
+  };
+})();
+</script>
 <nav class="sidebar">
   <div class="sb-logo">
     <h1>EdeneBeauty</h1>
