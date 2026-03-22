@@ -36,7 +36,33 @@ const morgan      = require('morgan');
 const path        = require('path');
 const { v4: uuidv4 } = require('uuid');
 
-const { db, queries, createInscrit, getInscrits, getStats, DB_PATH } = require('./src/database');
+const { db, queries, createInscrit, getInscrits, getStats, DB_PATH, turso } = require('./src/database');
+
+// Init schema Turso au démarrage
+if (turso) {
+  turso.batch([
+    { sql: `CREATE TABLE IF NOT EXISTS inscrits (
+      id INTEGER PRIMARY KEY AUTOINCREMENT, uuid TEXT NOT NULL UNIQUE,
+      nom TEXT NOT NULL, prenom TEXT NOT NULL,
+      email TEXT NOT NULL UNIQUE COLLATE NOCASE,
+      telephone TEXT, pays TEXT, ville TEXT,
+      type_profil TEXT NOT NULL DEFAULT 'cliente',
+      specialite TEXT, status TEXT DEFAULT 'nouveau',
+      source TEXT, ip_address TEXT,
+      created_at DATETIME DEFAULT (datetime('now'))
+    )`, args: [] },
+    { sql: `CREATE TABLE IF NOT EXISTS centres_interet (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      inscrit_id INTEGER NOT NULL, label TEXT NOT NULL
+    )`, args: [] },
+    { sql: `CREATE TABLE IF NOT EXISTS specialites_pro (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      inscrit_id INTEGER NOT NULL, specialite TEXT NOT NULL
+    )`, args: [] },
+  ], 'write')
+  .then(() => console.log('[Turso] Schema OK'))
+  .catch(e => console.error('[Turso] Schema error:', e.message));
+}
 const { sendConfirmation, sendEmail, templateConfirmation, templateWelcomePro } = require('./src/email');
 const { validateInscription, validateStatusUpdate, SPECIALITES_PRO, CENTRES_INTERET } = require('./src/validation');
 
@@ -176,7 +202,7 @@ app.get('/api/registrations/:id', (req, res) => {
   const inscrit = queries.getById.get(req.params.id);
   if (!inscrit) return res.status(404).json({ error: 'Inscrit introuvable.' });
 
-  const historique = queries.getHistorique.all(req.params.id);
+  const historique = queries.getHist.all(req.params.id);
   const emails     = db.prepare(`
     SELECT * FROM emails_log WHERE inscrit_id = ? ORDER BY sent_at DESC LIMIT 20
   `).all(req.params.id);
@@ -205,7 +231,7 @@ app.patch('/api/registrations/:id', validateStatusUpdate, (req, res) => {
 
   if (notes_admin !== undefined && !status) {
     queries.updateNotes.run(notes_admin, id);
-    queries.insertHistorique.run(id, 'note_update', 'Notes mises à jour', getIP(req));
+    queries.insertHist.run(id, 'note_update', 'Notes mises à jour', getIP(req));
   }
 
   res.json({ success: true, inscrit: queries.getById.get(id) });
@@ -219,7 +245,7 @@ app.delete('/api/registrations/:id', (req, res) => {
   if (!inscrit) return res.status(404).json({ error: 'Inscrit introuvable.' });
 
   queries.delete.run(req.params.id);
-  queries.insertHistorique.run(null, 'delete', `Suppression inscrit #${req.params.id} — ${inscrit.email}`, getIP(req));
+  queries.insertHist.run(null, 'delete', `Suppression inscrit #${req.params.id} — ${inscrit.email}`, getIP(req));
 
   res.json({ success: true });
 });
@@ -271,13 +297,13 @@ app.post('/api/tags', (req, res) => {
 app.post('/api/registrations/:id/tags', (req, res) => {
   const { tag_id } = req.body;
   if (!tag_id) return res.status(400).json({ error: 'tag_id requis.' });
-  queries.addTagToInscrit.run(req.params.id, tag_id);
-  queries.insertHistorique.run(req.params.id, 'tag_add', `Tag ajouté: ${tag_id}`, getIP(req));
+ queries.addTag.run(req.params.id, tag_id);
+  queries.insertHist.run(req.params.id, 'tag_add', `Tag ajouté: ${tag_id}`, getIP(req));
   res.json({ success: true });
 });
 
 app.delete('/api/registrations/:id/tags/:tagId', (req, res) => {
-  queries.removeTagFromInscrit.run(req.params.id, req.params.tagId);
+  queries.removeTag.run(req.params.id, req.params.tagId);
   res.json({ success: true });
 });
 
