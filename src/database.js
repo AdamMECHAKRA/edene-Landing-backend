@@ -15,10 +15,27 @@
 const path = require('path');
 const fs   = require('fs');
 
-const DB_DIR  = path.join(__dirname, '..', 'data');
+const DB_DIR  = process.env.TURSO_URL
+  ? '/tmp'
+  : path.join(__dirname, '..', 'data');
 const DB_PATH = path.join(DB_DIR, 'edenebeauty.db');
 
 if (!fs.existsSync(DB_DIR)) fs.mkdirSync(DB_DIR, { recursive: true });
+
+// ── Client Turso (persistance cloud)
+let turso = null;
+if (process.env.TURSO_URL && process.env.TURSO_TOKEN) {
+  try {
+    const { createClient } = require('@libsql/client');
+    turso = createClient({
+      url:       process.env.TURSO_URL,
+      authToken: process.env.TURSO_TOKEN,
+    });
+    console.log('[DB] Turso cloud connecté');
+  } catch(e) {
+    console.error('[DB] Turso erreur:', e.message);
+  }
+}
 
 // ── Chargement du driver SQLite ──────────────────────────────────────
 let Database;
@@ -232,6 +249,25 @@ const createInscrit = db.transaction((data, centres, specialites) => {
   if (centres && centres.length)    centres.forEach(c    => { if(c&&c.trim()) queries.insertCentre.run(id, c.trim()); });
   if (specialites && specialites.length) specialites.forEach(s => { if(s&&s.trim()) queries.insertSpec.run(id, s.trim()); });
   queries.insertHist.run(id, 'inscription', `Inscription via ${data.source||'landing_page'}`, data.ip_address);
+
+  // Sync Turso (async non bloquant)
+  setImmediate(async () => {
+    if (!turso) return;
+    try {
+      await turso.execute({
+        sql: `INSERT OR IGNORE INTO inscrits (uuid,nom,prenom,email,telephone,pays,ville,type_profil,specialite,status,source,ip_address,created_at)
+              VALUES (?,?,?,?,?,?,?,?,?,?,?,?,datetime('now'))`,
+        args: [data.uuid,data.nom,data.prenom,data.email,
+               data.telephone||null,data.pays||null,data.ville||null,
+               data.type_profil,data.specialite||null,'nouveau',
+               data.source||'landing_page',data.ip_address||null]
+      });
+      console.log('[Turso] Inscrit sauvegardé:', data.email);
+    } catch(e) {
+      console.error('[Turso] Erreur sync:', e.message);
+    }
+  });
+
   return id;
 });
 
@@ -283,4 +319,4 @@ function getStats() {
   };
 }
 
-module.exports = { db, queries, createInscrit, getInscrits, getStats, DB_PATH };
+module.exports = { db, queries, createInscrit, getInscrits, getStats, DB_PATH, turso };
