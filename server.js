@@ -37,6 +37,120 @@ const path        = require('path');
 const { v4: uuidv4 } = require('uuid');
 
 const { db, queries, createInscrit, getInscrits, getStats, DB_PATH, turso } = require('./src/database');
+// ── Notification email admin
+const nodemailer = require('nodemailer');
+
+function createAdminTransporter() {
+  if (!process.env.SMTP_USER || !process.env.SMTP_PASS) return null;
+  return nodemailer.createTransport({
+    host: process.env.SMTP_HOST || 'smtp.gmail.com',
+    port: parseInt(process.env.SMTP_PORT) || 587,
+    secure: false,
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
+    },
+  });
+}
+
+async function notifierAdmin(inscrit, centres, specialite) {
+  const transporter = createAdminTransporter();
+  if (!transporter) {
+    console.log('[Email Admin] SMTP non configuré');
+    return;
+  }
+
+  const estPro = inscrit.type_profil === 'pro';
+  const sujet  = `[EdeneBeauty] Nouvelle ${estPro ? 'Professionnelle' : 'Cliente'} — ${inscrit.prenom} ${inscrit.nom}`;
+
+  const corps = `
+<!DOCTYPE html>
+<html lang="fr">
+<head><meta charset="UTF-8"></head>
+<body style="font-family:Arial,sans-serif;background:#f9f9f9;padding:20px;">
+  <div style="max-width:560px;margin:0 auto;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.08);">
+
+    <div style="background:#14227A;padding:24px 32px;">
+      <h1 style="margin:0;color:#fff;font-size:20px;font-weight:700;letter-spacing:1px;">EdeneBeauty</h1>
+      <p style="margin:4px 0 0;color:rgba(255,255,255,0.7);font-size:13px;">Nouvelle inscription reçue</p>
+    </div>
+
+    <div style="padding:28px 32px;">
+
+      <div style="background:${estPro ? '#EEF2FF' : '#FFF0F6'};border-left:4px solid ${estPro ? '#14227A' : '#ff8fa3'};padding:12px 16px;border-radius:6px;margin-bottom:24px;">
+        <p style="margin:0;font-size:15px;font-weight:700;color:#14227A;">
+          ${estPro ? '💼 Professionnelle' : '✨ Future Cliente'}
+        </p>
+      </div>
+
+      <table style="width:100%;border-collapse:collapse;font-size:14px;">
+        <tr style="border-bottom:1px solid #f0f0f0;">
+          <td style="padding:10px 0;color:#888;width:140px;">Prénom Nom</td>
+          <td style="padding:10px 0;font-weight:600;color:#1a1a1a;">${inscrit.prenom} ${inscrit.nom}</td>
+        </tr>
+        <tr style="border-bottom:1px solid #f0f0f0;">
+          <td style="padding:10px 0;color:#888;">Email</td>
+          <td style="padding:10px 0;"><a href="mailto:${inscrit.email}" style="color:#14227A;">${inscrit.email}</a></td>
+        </tr>
+        <tr style="border-bottom:1px solid #f0f0f0;">
+          <td style="padding:10px 0;color:#888;">Téléphone</td>
+          <td style="padding:10px 0;color:#1a1a1a;">${inscrit.telephone || '—'}</td>
+        </tr>
+        <tr style="border-bottom:1px solid #f0f0f0;">
+          <td style="padding:10px 0;color:#888;">Localisation</td>
+          <td style="padding:10px 0;color:#1a1a1a;">${[inscrit.ville, inscrit.pays].filter(Boolean).join(', ') || '—'}</td>
+        </tr>
+        <tr style="border-bottom:1px solid #f0f0f0;">
+          <td style="padding:10px 0;color:#888;">Source</td>
+          <td style="padding:10px 0;color:#1a1a1a;">${inscrit.source || 'landing_page'}</td>
+        </tr>
+        ${estPro ? `
+        <tr style="border-bottom:1px solid #f0f0f0;">
+          <td style="padding:10px 0;color:#888;">Spécialité</td>
+          <td style="padding:10px 0;font-weight:600;color:#14227A;">${specialite || '—'}</td>
+        </tr>
+        ` : `
+        <tr style="border-bottom:1px solid #f0f0f0;">
+          <td style="padding:10px 0;color:#888;">Centres d'intérêt</td>
+          <td style="padding:10px 0;color:#1a1a1a;">${centres && centres.length ? centres.join(', ') : '—'}</td>
+        </tr>
+        `}
+        <tr>
+          <td style="padding:10px 0;color:#888;">Date</td>
+          <td style="padding:10px 0;color:#1a1a1a;">${new Date().toLocaleDateString('fr-FR', {day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'})}</td>
+        </tr>
+      </table>
+
+      <div style="margin-top:24px;text-align:center;">
+        <a href="https://api.edeneapp.com/admin.html"
+           style="display:inline-block;background:#14227A;color:#fff;padding:12px 28px;border-radius:8px;text-decoration:none;font-weight:600;font-size:14px;">
+          Voir dans le dashboard →
+        </a>
+      </div>
+
+    </div>
+
+    <div style="background:#f9f9f9;padding:16px 32px;text-align:center;border-top:1px solid #eee;">
+      <p style="margin:0;font-size:11px;color:#aaa;">EdeneBeauty · edeneapp.com</p>
+    </div>
+
+  </div>
+</body>
+</html>
+  `.trim();
+
+  try {
+    await transporter.sendMail({
+      from: `"EdeneBeauty" <${process.env.SMTP_USER}>`,
+      to:   process.env.ADMIN_EMAIL,
+      subject: sujet,
+      html: corps,
+    });
+    console.log('[Email Admin] Notification envoyée pour:', inscrit.email);
+  } catch(err) {
+    console.error('[Email Admin] Erreur:', err.message);
+  }
+}
 
 // Init schema Turso au démarrage
 if (turso) {
