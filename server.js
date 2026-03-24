@@ -275,6 +275,12 @@ app.post('/api/register', validateInscription, async (req, res) => {
 
     // Email de confirmation (async, non bloquant)
     sendConfirmation(inscrit).catch(console.error);
+    // Notification admin
+    notifierAdmin(
+      inscrit,
+      type_profil === 'cliente' ? (Array.isArray(centres_interet) ? centres_interet : []) : [],
+      type_profil === 'pro' ? specialite : null
+    ).catch(console.error);
 
     return res.status(201).json({
       success: true,
