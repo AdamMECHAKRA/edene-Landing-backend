@@ -36,7 +36,7 @@ const morgan      = require('morgan');
 const path        = require('path');
 const { v4: uuidv4 } = require('uuid');
 
-const { db, queries, createInscrit, getInscrits, getStats, DB_PATH, turso } = require('./src/database');
+const { db, queries, createInscrit, getInscrits, getStats, DB_PATH, turso, syncFromTurso } = require('./src/database');
 // ── Notification email admin
 const nodemailer = require('nodemailer');
 
@@ -162,7 +162,7 @@ if (turso) {
       telephone TEXT, pays TEXT, ville TEXT,
       type_profil TEXT NOT NULL DEFAULT 'cliente',
       specialite TEXT, status TEXT DEFAULT 'nouveau',
-      source TEXT, ip_address TEXT,
+      source TEXT, ip_address TEXT, notes_admin TEXT,
       created_at DATETIME DEFAULT (datetime('now'))
     )`, args: [] },
     { sql: `CREATE TABLE IF NOT EXISTS centres_interet (
@@ -347,11 +347,19 @@ app.patch('/api/registrations/:id', validateStatusUpdate, (req, res) => {
       `Statut: ${inscrit.status} → ${status}`,
       getIP(req)
     );
+    if (turso) turso.execute({
+      sql: `UPDATE inscrits SET status=?, notes_admin=COALESCE(?,notes_admin) WHERE uuid=?`,
+      args: [status, notes_admin || null, inscrit.uuid]
+    }).catch(e => console.error('[Turso] Erreur update status:', e.message));
   }
 
   if (notes_admin !== undefined && !status) {
     queries.updateNotes.run(notes_admin, id);
     queries.insertHist.run(id, 'note_update', 'Notes mises à jour', getIP(req));
+    if (turso) turso.execute({
+      sql: `UPDATE inscrits SET notes_admin=? WHERE uuid=?`,
+      args: [notes_admin, inscrit.uuid]
+    }).catch(e => console.error('[Turso] Erreur update notes:', e.message));
   }
 
   res.json({ success: true, inscrit: queries.getById.get(id) });
@@ -366,6 +374,11 @@ app.delete('/api/registrations/:id', (req, res) => {
 
   queries.delete.run(req.params.id);
   queries.insertHist.run(null, 'delete', `Suppression inscrit #${req.params.id} — ${inscrit.email}`, getIP(req));
+
+  if (turso) turso.execute({
+    sql: `DELETE FROM inscrits WHERE uuid=?`,
+    args: [inscrit.uuid]
+  }).catch(e => console.error('[Turso] Erreur delete:', e.message));
 
   res.json({ success: true });
 });
@@ -566,12 +579,14 @@ app.get('*', (req, res) => {
 // ─────────────────────────────────────────────────
 // DÉMARRAGE
 // ─────────────────────────────────────────────────
-app.listen(PORT, () => {
-  console.log('\n╔═══════════════════════════════════════════╗');
-  console.log('║       EdeneBeauty Backend v2.0            ║');
-  console.log(`║   http://localhost:${PORT}                   ║`);
-  console.log(`║   DB: ${DB_PATH.split('/').slice(-2).join('/')}           ║`);
-  console.log('╚═══════════════════════════════════════════╝\n');
+syncFromTurso().finally(() => {
+  app.listen(PORT, () => {
+    console.log('\n╔═══════════════════════════════════════════╗');
+    console.log('║       EdeneBeauty Backend v2.0            ║');
+    console.log(`║   http://localhost:${PORT}                   ║`);
+    console.log(`║   DB: ${DB_PATH.split('/').slice(-2).join('/')}           ║`);
+    console.log('╚═══════════════════════════════════════════╝\n');
+  });
 });
 
 module.exports = app;

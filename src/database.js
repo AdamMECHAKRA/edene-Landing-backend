@@ -251,17 +251,32 @@ const createInscrit = db.transaction((data, centres, specialites) => {
   queries.insertHist.run(id, 'inscription', `Inscription via ${data.source||'landing_page'}`, data.ip_address);
 
   // Sync Turso (async non bloquant)
+  const centresCopy = centres ? [...centres] : [];
+  const specsCopy   = specialites ? [...specialites] : [];
   setImmediate(async () => {
     if (!turso) return;
     try {
-      await turso.execute({
-        sql: `INSERT OR IGNORE INTO inscrits (uuid,nom,prenom,email,telephone,pays,ville,type_profil,specialite,status,source,ip_address,created_at)
-              VALUES (?,?,?,?,?,?,?,?,?,?,?,?,datetime('now'))`,
+      const r = await turso.execute({
+        sql: `INSERT OR IGNORE INTO inscrits (uuid,nom,prenom,email,telephone,pays,ville,type_profil,specialite,status,source,ip_address,notes_admin,created_at)
+              VALUES (?,?,?,?,?,?,?,?,?,?,?,?,null,datetime('now'))`,
         args: [data.uuid,data.nom,data.prenom,data.email,
                data.telephone||null,data.pays||null,data.ville||null,
                data.type_profil,data.specialite||null,'nouveau',
                data.source||'landing_page',data.ip_address||null]
       });
+      const tursoId = Number(r.lastInsertRowid);
+      if (tursoId && centresCopy.length) {
+        for (const c of centresCopy) {
+          if (!c?.trim()) continue;
+          await turso.execute({ sql: `INSERT OR IGNORE INTO centres_interet (inscrit_id, label) VALUES (?,?)`, args: [tursoId, c.trim()] });
+        }
+      }
+      if (tursoId && specsCopy.length) {
+        for (const s of specsCopy) {
+          if (!s?.trim()) continue;
+          await turso.execute({ sql: `INSERT OR IGNORE INTO specialites_pro (inscrit_id, specialite) VALUES (?,?)`, args: [tursoId, s.trim()] });
+        }
+      }
       console.log('[Turso] Inscrit sauvegardé:', data.email);
     } catch(e) {
       console.error('[Turso] Erreur sync:', e.message);
@@ -319,4 +334,53 @@ function getStats() {
   };
 }
 
-module.exports = { db, queries, createInscrit, getInscrits, getStats, DB_PATH, turso };
+// ─────────────────────────────────────────────────
+// SYNC TURSO → SQLite LOCAL (au démarrage)
+// ─────────────────────────────────────────────────
+async function syncFromTurso() {
+  if (!turso) return;
+  try {
+    console.log('[Turso] Synchronisation au démarrage...');
+
+    const { rows: inscrits } = await turso.execute('SELECT * FROM inscrits');
+    if (inscrits.length > 0) {
+      db.transaction(() => {
+        const stmt = db.prepare(`
+          INSERT OR REPLACE INTO inscrits
+            (id, uuid, nom, prenom, email, telephone, pays, ville,
+             type_profil, specialite, status, source, ip_address, notes_admin, created_at)
+          VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+        `);
+        for (const r of inscrits) {
+          stmt.run(r.id, r.uuid, r.nom, r.prenom, r.email,
+            r.telephone||null, r.pays||null, r.ville||null,
+            r.type_profil, r.specialite||null, r.status||'nouveau',
+            r.source||'landing_page', r.ip_address||null, r.notes_admin||null,
+            r.created_at);
+        }
+      })();
+    }
+
+    const { rows: centres } = await turso.execute('SELECT * FROM centres_interet');
+    if (centres.length > 0) {
+      db.transaction(() => {
+        const stmt = db.prepare(`INSERT OR REPLACE INTO centres_interet (id, inscrit_id, label) VALUES (?,?,?)`);
+        for (const r of centres) stmt.run(r.id, r.inscrit_id, r.label);
+      })();
+    }
+
+    const { rows: specs } = await turso.execute('SELECT * FROM specialites_pro');
+    if (specs.length > 0) {
+      db.transaction(() => {
+        const stmt = db.prepare(`INSERT OR REPLACE INTO specialites_pro (id, inscrit_id, specialite) VALUES (?,?,?)`);
+        for (const r of specs) stmt.run(r.id, r.inscrit_id, r.specialite);
+      })();
+    }
+
+    console.log(`[Turso] Sync OK — ${inscrits.length} inscrits chargés`);
+  } catch(e) {
+    console.error('[Turso] Erreur sync démarrage:', e.message);
+  }
+}
+
+module.exports = { db, queries, createInscrit, getInscrits, getStats, DB_PATH, turso, syncFromTurso };
