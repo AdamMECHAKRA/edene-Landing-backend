@@ -56,36 +56,25 @@ db.pragma('foreign_keys = ON');
 // ─────────────────────────────────────────────────
 db.exec(`
   CREATE TABLE IF NOT EXISTS inscrits (
-    id            INTEGER PRIMARY KEY AUTOINCREMENT,
-    uuid          TEXT    NOT NULL UNIQUE,
-    nom           TEXT    NOT NULL,
-    prenom        TEXT    NOT NULL,
-    email         TEXT    NOT NULL UNIQUE COLLATE NOCASE,
-    telephone     TEXT,
-    pays          TEXT,
-    ville         TEXT,
-    type_profil   TEXT    NOT NULL DEFAULT 'cliente' CHECK(type_profil IN ('pro','cliente')),
-    specialite    TEXT,
-    status        TEXT    NOT NULL DEFAULT 'nouveau'
-                          CHECK(status IN ('nouveau','contacté','en_cours','validé','refusé')),
-    source        TEXT    DEFAULT 'landing_page',
-    ip_address    TEXT,
-    user_agent    TEXT,
-    notes_admin   TEXT,
-    created_at    DATETIME DEFAULT (datetime('now')),
-    updated_at    DATETIME DEFAULT (datetime('now'))
-  );
-
-  CREATE TABLE IF NOT EXISTS centres_interet (
-    id          INTEGER PRIMARY KEY AUTOINCREMENT,
-    inscrit_id  INTEGER NOT NULL REFERENCES inscrits(id) ON DELETE CASCADE,
-    label       TEXT    NOT NULL
-  );
-
-  CREATE TABLE IF NOT EXISTS specialites_pro (
-    id          INTEGER PRIMARY KEY AUTOINCREMENT,
-    inscrit_id  INTEGER NOT NULL REFERENCES inscrits(id) ON DELETE CASCADE,
-    specialite  TEXT    NOT NULL
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    uuid            TEXT    NOT NULL UNIQUE,
+    nom             TEXT    NOT NULL,
+    prenom          TEXT    NOT NULL,
+    email           TEXT    NOT NULL UNIQUE COLLATE NOCASE,
+    telephone       TEXT,
+    pays            TEXT,
+    ville           TEXT,
+    type_profil     TEXT    NOT NULL DEFAULT 'cliente' CHECK(type_profil IN ('pro','cliente')),
+    specialite      TEXT,
+    centres_interet TEXT,
+    status          TEXT    NOT NULL DEFAULT 'nouveau'
+                            CHECK(status IN ('nouveau','contacté','en_cours','validé','refusé')),
+    source          TEXT    DEFAULT 'landing_page',
+    ip_address      TEXT,
+    user_agent      TEXT,
+    notes_admin     TEXT,
+    created_at      DATETIME DEFAULT (datetime('now')),
+    updated_at      DATETIME DEFAULT (datetime('now'))
   );
 
   CREATE TABLE IF NOT EXISTS pays_ref (
@@ -145,7 +134,6 @@ db.exec(`
   CREATE INDEX IF NOT EXISTS idx_inscrits_status  ON inscrits(status);
   CREATE INDEX IF NOT EXISTS idx_inscrits_pays    ON inscrits(pays);
   CREATE INDEX IF NOT EXISTS idx_inscrits_created ON inscrits(created_at);
-  CREATE INDEX IF NOT EXISTS idx_centres_inscrit  ON centres_interet(inscrit_id);
   CREATE INDEX IF NOT EXISTS idx_hist_inscrit     ON historique(inscrit_id);
 
   CREATE TRIGGER IF NOT EXISTS trg_inscrits_updated
@@ -192,27 +180,21 @@ const insertConfig = db.prepare(`INSERT OR IGNORE INTO config (cle, valeur) VALU
 const queries = {
   getById: db.prepare(`
     SELECT i.*,
-      GROUP_CONCAT(DISTINCT ci.label)      AS centres,
-      GROUP_CONCAT(DISTINCT sp.specialite) AS specialites_multi,
-      GROUP_CONCAT(DISTINCT t.label)       AS tags
+      GROUP_CONCAT(DISTINCT t.label) AS tags
     FROM inscrits i
-    LEFT JOIN centres_interet ci ON ci.inscrit_id = i.id
-    LEFT JOIN specialites_pro  sp ON sp.inscrit_id = i.id
-    LEFT JOIN inscrits_tags    it ON it.inscrit_id = i.id
-    LEFT JOIN tags             t  ON t.id = it.tag_id
+    LEFT JOIN inscrits_tags it ON it.inscrit_id = i.id
+    LEFT JOIN tags          t  ON t.id = it.tag_id
     WHERE i.id = ? GROUP BY i.id
   `),
   getByEmail:    db.prepare(`SELECT id, email FROM inscrits WHERE email = ? COLLATE NOCASE`),
   getByUuid:     db.prepare(`SELECT * FROM inscrits WHERE uuid = ?`),
   insert:        db.prepare(`
-    INSERT INTO inscrits (uuid,nom,prenom,email,telephone,pays,ville,type_profil,specialite,source,ip_address,user_agent)
-    VALUES (@uuid,@nom,@prenom,@email,@telephone,@pays,@ville,@type_profil,@specialite,@source,@ip_address,@user_agent)
+    INSERT INTO inscrits (uuid,nom,prenom,email,telephone,pays,ville,type_profil,specialite,centres_interet,source,ip_address,user_agent)
+    VALUES (@uuid,@nom,@prenom,@email,@telephone,@pays,@ville,@type_profil,@specialite,@centres_interet,@source,@ip_address,@user_agent)
   `),
   updateStatus:  db.prepare(`UPDATE inscrits SET status=?, notes_admin=COALESCE(?,notes_admin) WHERE id=?`),
   updateNotes:   db.prepare(`UPDATE inscrits SET notes_admin=? WHERE id=?`),
   delete:        db.prepare(`DELETE FROM inscrits WHERE id=?`),
-  insertCentre:  db.prepare(`INSERT INTO centres_interet (inscrit_id, label) VALUES (?, ?)`),
-  insertSpec:    db.prepare(`INSERT INTO specialites_pro (inscrit_id, specialite) VALUES (?, ?)`),
   getAllTags:    db.prepare(`SELECT * FROM tags ORDER BY label`),
   insertTag:    db.prepare(`INSERT OR IGNORE INTO tags (label, color) VALUES (?, ?)`),
   getTagByLabel:db.prepare(`SELECT id FROM tags WHERE label=?`),
@@ -233,8 +215,8 @@ const queries = {
   statParPays:  db.prepare(`SELECT pays, COUNT(*) as n FROM inscrits WHERE pays IS NOT NULL GROUP BY pays ORDER BY n DESC LIMIT 15`),
   statParZone:  db.prepare(`SELECT pr.zone, COUNT(*) as n FROM inscrits i LEFT JOIN pays_ref pr ON pr.nom=i.pays WHERE pr.zone IS NOT NULL GROUP BY pr.zone ORDER BY n DESC`),
   statParJour:  db.prepare(`SELECT DATE(created_at) as date, COUNT(*) as n, SUM(CASE WHEN type_profil='pro' THEN 1 ELSE 0 END) as pros, SUM(CASE WHEN type_profil='cliente' THEN 1 ELSE 0 END) as clientes FROM inscrits GROUP BY DATE(created_at) ORDER BY date DESC LIMIT 60`),
-  statSpec:     db.prepare(`SELECT sp.specialite, COUNT(*) as n FROM specialites_pro sp GROUP BY sp.specialite ORDER BY n DESC`),
-  statCentres:  db.prepare(`SELECT ci.label, COUNT(*) as n FROM centres_interet ci GROUP BY ci.label ORDER BY n DESC`),
+  statSpec:     db.prepare(`SELECT specialite, COUNT(*) as n FROM inscrits WHERE type_profil='pro' AND specialite IS NOT NULL GROUP BY specialite ORDER BY n DESC`),
+  statCentres:  db.prepare(`SELECT value as label, COUNT(*) as n FROM inscrits, json_each(inscrits.centres_interet) WHERE type_profil='cliente' AND centres_interet IS NOT NULL GROUP BY value ORDER BY n DESC`),
   statSource:   db.prepare(`SELECT source, COUNT(*) as n FROM inscrits GROUP BY source ORDER BY n DESC`),
   statSemaine:  db.prepare(`SELECT COUNT(*) as n FROM inscrits WHERE created_at >= datetime('now','-7 days')`),
   statMois:     db.prepare(`SELECT COUNT(*) as n FROM inscrits WHERE created_at >= datetime('now','start of month')`),
@@ -243,40 +225,23 @@ const queries = {
 // ─────────────────────────────────────────────────
 // TRANSACTIONS
 // ─────────────────────────────────────────────────
-const createInscrit = db.transaction((data, centres, specialites) => {
+const createInscrit = db.transaction((data) => {
   const result = queries.insert.run(data);
   const id = result.lastInsertRowid;
-  if (centres && centres.length)    centres.forEach(c    => { if(c&&c.trim()) queries.insertCentre.run(id, c.trim()); });
-  if (specialites && specialites.length) specialites.forEach(s => { if(s&&s.trim()) queries.insertSpec.run(id, s.trim()); });
   queries.insertHist.run(id, 'inscription', `Inscription via ${data.source||'landing_page'}`, data.ip_address);
 
   // Sync Turso (async non bloquant)
-  const centresCopy = centres ? [...centres] : [];
-  const specsCopy   = specialites ? [...specialites] : [];
   setImmediate(async () => {
     if (!turso) return;
     try {
-      const r = await turso.execute({
-        sql: `INSERT OR IGNORE INTO inscrits (uuid,nom,prenom,email,telephone,pays,ville,type_profil,specialite,status,source,ip_address,notes_admin,created_at)
-              VALUES (?,?,?,?,?,?,?,?,?,?,?,?,null,datetime('now'))`,
+      await turso.execute({
+        sql: `INSERT OR IGNORE INTO inscrits (uuid,nom,prenom,email,telephone,pays,ville,type_profil,specialite,centres_interet,status,source,ip_address,notes_admin,created_at)
+              VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,null,datetime('now'))`,
         args: [data.uuid,data.nom,data.prenom,data.email,
                data.telephone||null,data.pays||null,data.ville||null,
-               data.type_profil,data.specialite||null,'nouveau',
-               data.source||'landing_page',data.ip_address||null]
+               data.type_profil,data.specialite||null,data.centres_interet||null,
+               'nouveau',data.source||'landing_page',data.ip_address||null]
       });
-      const tursoId = Number(r.lastInsertRowid);
-      if (tursoId && centresCopy.length) {
-        for (const c of centresCopy) {
-          if (!c?.trim()) continue;
-          await turso.execute({ sql: `INSERT OR IGNORE INTO centres_interet (inscrit_id, label) VALUES (?,?)`, args: [tursoId, c.trim()] });
-        }
-      }
-      if (tursoId && specsCopy.length) {
-        for (const s of specsCopy) {
-          if (!s?.trim()) continue;
-          await turso.execute({ sql: `INSERT OR IGNORE INTO specialites_pro (inscrit_id, specialite) VALUES (?,?)`, args: [tursoId, s.trim()] });
-        }
-      }
       console.log('[Turso] Inscrit sauvegardé:', data.email);
     } catch(e) {
       console.error('[Turso] Erreur sync:', e.message);
@@ -286,12 +251,19 @@ const createInscrit = db.transaction((data, centres, specialites) => {
   return id;
 });
 
+function parseInscrit(r) {
+  const centres = (() => {
+    try { return (JSON.parse(r.centres_interet || '[]')).join(','); } catch { return ''; }
+  })();
+  return { ...r, centres, specialites_multi: r.specialite || '' };
+}
+
 function getInscrits({ type, status, pays, search, page=1, limit=50 } = {}) {
   let where = ['1=1'];
   const params = [];
-  if (type && type !== 'tous')   { where.push(`i.type_profil=?`); params.push(type); }
-  if (status && status !== 'tous') { where.push(`i.status=?`);     params.push(status); }
-  if (pays)                      { where.push(`i.pays=?`);         params.push(pays); }
+  if (type && type !== 'tous')     { where.push(`i.type_profil=?`); params.push(type); }
+  if (status && status !== 'tous') { where.push(`i.status=?`);      params.push(status); }
+  if (pays)                        { where.push(`i.pays=?`);         params.push(pays); }
   if (search) {
     where.push(`(i.nom LIKE ? OR i.prenom LIKE ? OR i.email LIKE ? OR i.ville LIKE ? OR i.telephone LIKE ?)`);
     const s = `%${search}%`;
@@ -300,19 +272,14 @@ function getInscrits({ type, status, pays, search, page=1, limit=50 } = {}) {
   const w = where.join(' AND ');
   const offset = (parseInt(page)-1)*parseInt(limit);
   const total = db.prepare(`SELECT COUNT(DISTINCT i.id) as n FROM inscrits i WHERE ${w}`).get(...params).n;
-  const data  = db.prepare(`
-    SELECT i.*,
-      GROUP_CONCAT(DISTINCT ci.label)      AS centres,
-      GROUP_CONCAT(DISTINCT sp.specialite) AS specialites_multi,
-      GROUP_CONCAT(DISTINCT t.label)       AS tags
+  const rows  = db.prepare(`
+    SELECT i.*, GROUP_CONCAT(DISTINCT t.label) AS tags
     FROM inscrits i
-    LEFT JOIN centres_interet ci ON ci.inscrit_id=i.id
-    LEFT JOIN specialites_pro  sp ON sp.inscrit_id=i.id
-    LEFT JOIN inscrits_tags    it ON it.inscrit_id=i.id
-    LEFT JOIN tags             t  ON t.id=it.tag_id
+    LEFT JOIN inscrits_tags it ON it.inscrit_id=i.id
+    LEFT JOIN tags          t  ON t.id=it.tag_id
     WHERE ${w} GROUP BY i.id ORDER BY i.created_at DESC LIMIT ? OFFSET ?
   `).all(...params, parseInt(limit), offset);
-  return { data, total, page: parseInt(page), pages: Math.ceil(total/parseInt(limit)) };
+  return { data: rows.map(parseInscrit), total, page: parseInt(page), pages: Math.ceil(total/parseInt(limit)) };
 }
 
 function getStats() {
@@ -341,42 +308,25 @@ async function syncFromTurso() {
   if (!turso) return;
   try {
     console.log('[Turso] Synchronisation au démarrage...');
-
     const { rows: inscrits } = await turso.execute('SELECT * FROM inscrits');
     if (inscrits.length > 0) {
       db.transaction(() => {
         const stmt = db.prepare(`
           INSERT OR REPLACE INTO inscrits
             (id, uuid, nom, prenom, email, telephone, pays, ville,
-             type_profil, specialite, status, source, ip_address, notes_admin, created_at)
-          VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+             type_profil, specialite, centres_interet, status, source,
+             ip_address, notes_admin, created_at)
+          VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
         `);
         for (const r of inscrits) {
           stmt.run(r.id, r.uuid, r.nom, r.prenom, r.email,
             r.telephone||null, r.pays||null, r.ville||null,
-            r.type_profil, r.specialite||null, r.status||'nouveau',
-            r.source||'landing_page', r.ip_address||null, r.notes_admin||null,
-            r.created_at);
+            r.type_profil, r.specialite||null, r.centres_interet||null,
+            r.status||'nouveau', r.source||'landing_page',
+            r.ip_address||null, r.notes_admin||null, r.created_at);
         }
       })();
     }
-
-    const { rows: centres } = await turso.execute('SELECT * FROM centres_interet');
-    if (centres.length > 0) {
-      db.transaction(() => {
-        const stmt = db.prepare(`INSERT OR REPLACE INTO centres_interet (id, inscrit_id, label) VALUES (?,?,?)`);
-        for (const r of centres) stmt.run(r.id, r.inscrit_id, r.label);
-      })();
-    }
-
-    const { rows: specs } = await turso.execute('SELECT * FROM specialites_pro');
-    if (specs.length > 0) {
-      db.transaction(() => {
-        const stmt = db.prepare(`INSERT OR REPLACE INTO specialites_pro (id, inscrit_id, specialite) VALUES (?,?,?)`);
-        for (const r of specs) stmt.run(r.id, r.inscrit_id, r.specialite);
-      })();
-    }
-
     console.log(`[Turso] Sync OK — ${inscrits.length} inscrits chargés`);
   } catch(e) {
     console.error('[Turso] Erreur sync démarrage:', e.message);

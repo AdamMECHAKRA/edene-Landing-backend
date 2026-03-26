@@ -162,20 +162,13 @@ if (turso) {
         email TEXT NOT NULL UNIQUE COLLATE NOCASE,
         telephone TEXT, pays TEXT, ville TEXT,
         type_profil TEXT NOT NULL DEFAULT 'cliente',
-        specialite TEXT, status TEXT DEFAULT 'nouveau',
+        specialite TEXT, centres_interet TEXT,
+        status TEXT DEFAULT 'nouveau',
         source TEXT, ip_address TEXT, notes_admin TEXT,
         created_at DATETIME DEFAULT (datetime('now'))
       )`);
-      // Ajouter notes_admin si la table existait déjà sans cette colonne
       await turso.execute(`ALTER TABLE inscrits ADD COLUMN notes_admin TEXT`).catch(() => {});
-      await turso.execute(`CREATE TABLE IF NOT EXISTS centres_interet (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        inscrit_id INTEGER NOT NULL, label TEXT NOT NULL
-      )`);
-      await turso.execute(`CREATE TABLE IF NOT EXISTS specialites_pro (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        inscrit_id INTEGER NOT NULL, specialite TEXT NOT NULL
-      )`);
+      await turso.execute(`ALTER TABLE inscrits ADD COLUMN centres_interet TEXT`).catch(() => {});
       console.log('[Turso] Schema OK');
     } catch(e) {
       console.error('[Turso] Schema error:', e.message);
@@ -261,21 +254,20 @@ app.post('/api/register', validateInscription, async (req, res) => {
   try {
     const uuid = uuidv4();
 
-    const id = createInscrit(
-      {
-        uuid, nom, prenom, email,
-        telephone: telephone || null,
-        pays: pays || null,
-        ville: ville || null,
-        type_profil,
-        specialite: type_profil === 'pro' ? (specialite || null) : null,
-        source: source || 'landing_page',
-        ip_address: getIP(req),
-        user_agent: req.headers['user-agent'] || null,
-      },
-      type_profil === 'cliente' ? (Array.isArray(centres_interet) ? centres_interet : []) : [],
-      type_profil === 'pro' && specialite ? [specialite] : []
-    );
+    const id = createInscrit({
+      uuid, nom, prenom, email,
+      telephone: telephone || null,
+      pays: pays || null,
+      ville: ville || null,
+      type_profil,
+      specialite: type_profil === 'pro' ? (specialite || null) : null,
+      centres_interet: type_profil === 'cliente'
+        ? JSON.stringify(Array.isArray(centres_interet) ? centres_interet : [])
+        : null,
+      source: source || 'landing_page',
+      ip_address: getIP(req),
+      user_agent: req.headers['user-agent'] || null,
+    });
 
     const inscrit = queries.getById.get(id);
 
