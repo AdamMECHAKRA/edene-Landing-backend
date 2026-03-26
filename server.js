@@ -154,28 +154,33 @@ async function notifierAdmin(inscrit, centres, specialite) {
 
 // Init schema Turso au démarrage
 if (turso) {
-  turso.batch([
-    { sql: `CREATE TABLE IF NOT EXISTS inscrits (
-      id INTEGER PRIMARY KEY AUTOINCREMENT, uuid TEXT NOT NULL UNIQUE,
-      nom TEXT NOT NULL, prenom TEXT NOT NULL,
-      email TEXT NOT NULL UNIQUE COLLATE NOCASE,
-      telephone TEXT, pays TEXT, ville TEXT,
-      type_profil TEXT NOT NULL DEFAULT 'cliente',
-      specialite TEXT, status TEXT DEFAULT 'nouveau',
-      source TEXT, ip_address TEXT, notes_admin TEXT,
-      created_at DATETIME DEFAULT (datetime('now'))
-    )`, args: [] },
-    { sql: `CREATE TABLE IF NOT EXISTS centres_interet (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      inscrit_id INTEGER NOT NULL, label TEXT NOT NULL
-    )`, args: [] },
-    { sql: `CREATE TABLE IF NOT EXISTS specialites_pro (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      inscrit_id INTEGER NOT NULL, specialite TEXT NOT NULL
-    )`, args: [] },
-  ], 'write')
-  .then(() => console.log('[Turso] Schema OK'))
-  .catch(e => console.error('[Turso] Schema error:', e.message));
+  (async () => {
+    try {
+      await turso.execute(`CREATE TABLE IF NOT EXISTS inscrits (
+        id INTEGER PRIMARY KEY AUTOINCREMENT, uuid TEXT NOT NULL UNIQUE,
+        nom TEXT NOT NULL, prenom TEXT NOT NULL,
+        email TEXT NOT NULL UNIQUE COLLATE NOCASE,
+        telephone TEXT, pays TEXT, ville TEXT,
+        type_profil TEXT NOT NULL DEFAULT 'cliente',
+        specialite TEXT, status TEXT DEFAULT 'nouveau',
+        source TEXT, ip_address TEXT, notes_admin TEXT,
+        created_at DATETIME DEFAULT (datetime('now'))
+      )`);
+      // Ajouter notes_admin si la table existait déjà sans cette colonne
+      await turso.execute(`ALTER TABLE inscrits ADD COLUMN notes_admin TEXT`).catch(() => {});
+      await turso.execute(`CREATE TABLE IF NOT EXISTS centres_interet (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        inscrit_id INTEGER NOT NULL, label TEXT NOT NULL
+      )`);
+      await turso.execute(`CREATE TABLE IF NOT EXISTS specialites_pro (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        inscrit_id INTEGER NOT NULL, specialite TEXT NOT NULL
+      )`);
+      console.log('[Turso] Schema OK');
+    } catch(e) {
+      console.error('[Turso] Schema error:', e.message);
+    }
+  })();
 }
 const { sendConfirmation, sendEmail, templateConfirmation, templateWelcomePro } = require('./src/email');
 const { validateInscription, validateStatusUpdate, SPECIALITES_PRO, CENTRES_INTERET } = require('./src/validation');
@@ -186,6 +191,7 @@ const { validateInscription, validateStatusUpdate, SPECIALITES_PRO, CENTRES_INTE
 const app  = express();
 const PORT = process.env.PORT || 3000;
 
+app.set('trust proxy', 1);
 app.use(cors({ origin: '*', methods: ['GET','POST','PUT','PATCH','DELETE'] }));
 app.use(helmet({ contentSecurityPolicy: false }));
 app.use(morgan('dev'));
