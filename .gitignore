@@ -1,0 +1,63 @@
+# Dépendances
+node_modules/
+
+# Build
+dist/
+build/
+
+# Variables d'environnement
+.env
+.env.local
+.env.*.local
+
+# Base de données SQLite
+data/
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+
+# Tests
+coverage/
+
+# Fichiers temporaires
+*.tmp
+*.cache
+*.bak
+*.backup
+*.swp
+*.swo
+*.pid
+*.pid.lock
+*.seed
+
+# Archives
+*.zip
+*.tar.gz
+*.tgz
+
+# Binaires compilés
+*.exe
+*.dll
+*.so
+*.dylib
+*.pyc
+*.pyo
+*.class
+*.jar
+*.war
+*.ear
