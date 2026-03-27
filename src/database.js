@@ -10,15 +10,15 @@
  * dans Environment Variables. better-sqlite3 v9 supporte Node ≤ 22.
  */
 
-'use strict';
+"use strict";
 
-const path = require('path');
-const fs   = require('fs');
+const path = require("path");
+const fs = require("fs");
 
-const DB_DIR  = process.env.TURSO_URL
-  ? '/tmp'
-  : path.join(__dirname, '..', 'data');
-const DB_PATH = path.join(DB_DIR, 'edenebeauty.db');
+const DB_DIR = process.env.TURSO_URL
+  ? "/tmp"
+  : path.join(__dirname, "..", "data");
+const DB_PATH = path.join(DB_DIR, "edenebeauty.db");
 
 if (!fs.existsSync(DB_DIR)) fs.mkdirSync(DB_DIR, { recursive: true });
 
@@ -26,30 +26,30 @@ if (!fs.existsSync(DB_DIR)) fs.mkdirSync(DB_DIR, { recursive: true });
 let turso = null;
 if (process.env.TURSO_URL && process.env.TURSO_TOKEN) {
   try {
-    const { createClient } = require('@libsql/client');
+    const { createClient } = require("@libsql/client");
     turso = createClient({
-      url:       process.env.TURSO_URL,
+      url: process.env.TURSO_URL,
       authToken: process.env.TURSO_TOKEN,
     });
-    console.log('[DB] Turso cloud connecté');
-  } catch(e) {
-    console.error('[DB] Turso erreur:', e.message);
+    console.log("[DB] Turso cloud connecté");
+  } catch (e) {
+    console.error("[DB] Turso erreur:", e.message);
   }
 }
 
 // ── Chargement du driver SQLite ──────────────────────────────────────
 let Database;
 try {
-  Database = require('better-sqlite3');
-  console.log('[DB] Driver: better-sqlite3 (synchrone)');
+  Database = require("better-sqlite3");
+  console.log("[DB] Driver: better-sqlite3 (synchrone)");
 } catch (e) {
-  console.error('[DB] better-sqlite3 non disponible:', e.message);
+  console.error("[DB] better-sqlite3 non disponible:", e.message);
   process.exit(1);
 }
 
 const db = new Database(DB_PATH);
-db.pragma('journal_mode = WAL');
-db.pragma('foreign_keys = ON');
+db.pragma("journal_mode = WAL");
+db.pragma("foreign_keys = ON");
 
 // ─────────────────────────────────────────────────
 // SCHÉMA COMPLET
@@ -144,35 +144,56 @@ db.exec(`
 // ─────────────────────────────────────────────────
 // DONNÉES DE RÉFÉRENCE
 // ─────────────────────────────────────────────────
-const insertPays = db.prepare(`INSERT OR IGNORE INTO pays_ref (code, nom, zone) VALUES (?, ?, ?)`);
+const insertPays = db.prepare(
+  `INSERT OR IGNORE INTO pays_ref (code, nom, zone) VALUES (?, ?, ?)`,
+);
 const paysRef = [
-  ['FR','France','Europe'],['BE','Belgique','Europe'],['CH','Suisse','Europe'],
-  ['CA','Canada','Amérique'],['US','États-Unis','Amérique'],
-  ['CI','Côte d\'Ivoire','Afrique de l\'Ouest'],['SN','Sénégal','Afrique de l\'Ouest'],
-  ['CM','Cameroun','Afrique Centrale'],['GN','Guinée','Afrique de l\'Ouest'],
-  ['ML','Mali','Afrique de l\'Ouest'],['BF','Burkina Faso','Afrique de l\'Ouest'],
-  ['TG','Togo','Afrique de l\'Ouest'],['BJ','Bénin','Afrique de l\'Ouest'],
-  ['MR','Mauritanie','Afrique de l\'Ouest'],['GH','Ghana','Afrique de l\'Ouest'],
-  ['NG','Nigéria','Afrique de l\'Ouest'],['CG','Congo','Afrique Centrale'],
-  ['CD','RD Congo','Afrique Centrale'],['GA','Gabon','Afrique Centrale'],
-  ['MA','Maroc','Afrique du Nord'],['TN','Tunisie','Afrique du Nord'],
-  ['DZ','Algérie','Afrique du Nord'],['LY','Libye','Afrique du Nord'],
-  ['MG','Madagascar','Océan Indien'],['MU','Maurice','Océan Indien'],
-  ['RE','La Réunion','Océan Indien'],['MQ','Martinique','Caraïbes'],
-  ['GP','Guadeloupe','Caraïbes'],['GF','Guyane','Amérique'],
+  ["FR", "France", "Europe"],
+  ["BE", "Belgique", "Europe"],
+  ["CH", "Suisse", "Europe"],
+  ["CA", "Canada", "Amérique"],
+  ["US", "États-Unis", "Amérique"],
+  ["CI", "Côte d'Ivoire", "Afrique de l'Ouest"],
+  ["SN", "Sénégal", "Afrique de l'Ouest"],
+  ["CM", "Cameroun", "Afrique Centrale"],
+  ["GN", "Guinée", "Afrique de l'Ouest"],
+  ["ML", "Mali", "Afrique de l'Ouest"],
+  ["BF", "Burkina Faso", "Afrique de l'Ouest"],
+  ["TG", "Togo", "Afrique de l'Ouest"],
+  ["BJ", "Bénin", "Afrique de l'Ouest"],
+  ["MR", "Mauritanie", "Afrique de l'Ouest"],
+  ["GH", "Ghana", "Afrique de l'Ouest"],
+  ["NG", "Nigéria", "Afrique de l'Ouest"],
+  ["CG", "Congo", "Afrique Centrale"],
+  ["CD", "RD Congo", "Afrique Centrale"],
+  ["GA", "Gabon", "Afrique Centrale"],
+  ["MA", "Maroc", "Afrique du Nord"],
+  ["TN", "Tunisie", "Afrique du Nord"],
+  ["DZ", "Algérie", "Afrique du Nord"],
+  ["LY", "Libye", "Afrique du Nord"],
+  ["MG", "Madagascar", "Océan Indien"],
+  ["MU", "Maurice", "Océan Indien"],
+  ["RE", "La Réunion", "Océan Indien"],
+  ["MQ", "Martinique", "Caraïbes"],
+  ["GP", "Guadeloupe", "Caraïbes"],
+  ["GF", "Guyane", "Amérique"],
 ];
-db.transaction(() => paysRef.forEach(p => insertPays.run(...p)))();
+db.transaction(() => paysRef.forEach((p) => insertPays.run(...p)))();
 
-const insertConfig = db.prepare(`INSERT OR IGNORE INTO config (cle, valeur) VALUES (?, ?)`);
+const insertConfig = db.prepare(
+  `INSERT OR IGNORE INTO config (cle, valeur) VALUES (?, ?)`,
+);
 [
-  ['smtp_host','smtp.gmail.com'],['smtp_port','587'],
-  ['smtp_user',''],['smtp_pass',''],
-  ['email_from','EdeneBeauty <noreply@edenebeauty.com>'],
-  ['email_confirmation_active','0'],
-  ['admin_password','edene2024'],
-  ['site_nom','EdeneBeauty'],
-  ['site_url','https://edenebeauty.com'],
-].forEach(([k,v]) => insertConfig.run(k,v));
+  ["smtp_host", "smtp.gmail.com"],
+  ["smtp_port", "587"],
+  ["smtp_user", ""],
+  ["smtp_pass", ""],
+  ["email_from", "EdeneBeauty <noreply@edenebeauty.com>"],
+  ["email_confirmation_active", "0"],
+  ["admin_password", "edene2024"],
+  ["site_nom", "EdeneBeauty"],
+  ["site_url", "https://edenebeauty.com"],
+].forEach(([k, v]) => insertConfig.run(k, v));
 
 // ─────────────────────────────────────────────────
 // REQUÊTES PRÉPARÉES
@@ -186,40 +207,84 @@ const queries = {
     LEFT JOIN tags          t  ON t.id = it.tag_id
     WHERE i.id = ? GROUP BY i.id
   `),
-  getByEmail:    db.prepare(`SELECT id, email FROM inscrits WHERE email = ? COLLATE NOCASE`),
-  getByUuid:     db.prepare(`SELECT * FROM inscrits WHERE uuid = ?`),
-  insert:        db.prepare(`
+  getByEmail: db.prepare(
+    `SELECT id, email FROM inscrits WHERE email = ? COLLATE NOCASE`,
+  ),
+  getByUuid: db.prepare(`SELECT * FROM inscrits WHERE uuid = ?`),
+  insert: db.prepare(`
     INSERT INTO inscrits (uuid,nom,prenom,email,telephone,pays,ville,type_profil,specialite,centres_interet,source,ip_address,user_agent)
     VALUES (@uuid,@nom,@prenom,@email,@telephone,@pays,@ville,@type_profil,@specialite,@centres_interet,@source,@ip_address,@user_agent)
   `),
-  updateStatus:  db.prepare(`UPDATE inscrits SET status=?, notes_admin=COALESCE(?,notes_admin) WHERE id=?`),
-  updateNotes:   db.prepare(`UPDATE inscrits SET notes_admin=? WHERE id=?`),
-  delete:        db.prepare(`DELETE FROM inscrits WHERE id=?`),
-  getAllTags:    db.prepare(`SELECT * FROM tags ORDER BY label`),
-  insertTag:    db.prepare(`INSERT OR IGNORE INTO tags (label, color) VALUES (?, ?)`),
-  getTagByLabel:db.prepare(`SELECT id FROM tags WHERE label=?`),
-  addTag:       db.prepare(`INSERT OR IGNORE INTO inscrits_tags (inscrit_id,tag_id) VALUES (?,?)`),
-  removeTag:    db.prepare(`DELETE FROM inscrits_tags WHERE inscrit_id=? AND tag_id=?`),
-  insertHist:   db.prepare(`INSERT INTO historique (inscrit_id,action,detail,admin_ip) VALUES (?,?,?,?)`),
-  getHist:      db.prepare(`SELECT * FROM historique WHERE inscrit_id=? ORDER BY created_at DESC LIMIT 50`),
-  insertEmail:  db.prepare(`INSERT INTO emails_log (inscrit_id,destinataire,sujet,corps,statut,erreur) VALUES (?,?,?,?,?,?)`),
-  getConfig:    db.prepare(`SELECT cle, valeur FROM config`),
-  setConfig:    db.prepare(`UPDATE config SET valeur=?, updated_at=datetime('now') WHERE cle=?`),
-  getAllPays:   db.prepare(`SELECT * FROM pays_ref ORDER BY nom`),
-  statTotal:    db.prepare(`SELECT COUNT(*) as n FROM inscrits`),
-  statPros:     db.prepare(`SELECT COUNT(*) as n FROM inscrits WHERE type_profil='pro'`),
-  statClientes: db.prepare(`SELECT COUNT(*) as n FROM inscrits WHERE type_profil='cliente'`),
-  statNouveau:  db.prepare(`SELECT COUNT(*) as n FROM inscrits WHERE status='nouveau'`),
-  statValides:  db.prepare(`SELECT COUNT(*) as n FROM inscrits WHERE status='validé'`),
-  statParStatus:db.prepare(`SELECT status, COUNT(*) as n FROM inscrits GROUP BY status ORDER BY n DESC`),
-  statParPays:  db.prepare(`SELECT pays, COUNT(*) as n FROM inscrits WHERE pays IS NOT NULL GROUP BY pays ORDER BY n DESC LIMIT 15`),
-  statParZone:  db.prepare(`SELECT pr.zone, COUNT(*) as n FROM inscrits i LEFT JOIN pays_ref pr ON pr.nom=i.pays WHERE pr.zone IS NOT NULL GROUP BY pr.zone ORDER BY n DESC`),
-  statParJour:  db.prepare(`SELECT DATE(created_at) as date, COUNT(*) as n, SUM(CASE WHEN type_profil='pro' THEN 1 ELSE 0 END) as pros, SUM(CASE WHEN type_profil='cliente' THEN 1 ELSE 0 END) as clientes FROM inscrits GROUP BY DATE(created_at) ORDER BY date DESC LIMIT 60`),
-  statSpec:     db.prepare(`SELECT specialite, COUNT(*) as n FROM inscrits WHERE type_profil='pro' AND specialite IS NOT NULL GROUP BY specialite ORDER BY n DESC`),
-  statCentres:  db.prepare(`SELECT value as label, COUNT(*) as n FROM inscrits, json_each(inscrits.centres_interet) WHERE type_profil='cliente' AND centres_interet IS NOT NULL GROUP BY value ORDER BY n DESC`),
-  statSource:   db.prepare(`SELECT source, COUNT(*) as n FROM inscrits GROUP BY source ORDER BY n DESC`),
-  statSemaine:  db.prepare(`SELECT COUNT(*) as n FROM inscrits WHERE created_at >= datetime('now','-7 days')`),
-  statMois:     db.prepare(`SELECT COUNT(*) as n FROM inscrits WHERE created_at >= datetime('now','start of month')`),
+  updateStatus: db.prepare(
+    `UPDATE inscrits SET status=?, notes_admin=COALESCE(?,notes_admin) WHERE id=?`,
+  ),
+  updateNotes: db.prepare(`UPDATE inscrits SET notes_admin=? WHERE id=?`),
+  delete: db.prepare(`DELETE FROM inscrits WHERE id=?`),
+  getAllTags: db.prepare(`SELECT * FROM tags ORDER BY label`),
+  insertTag: db.prepare(
+    `INSERT OR IGNORE INTO tags (label, color) VALUES (?, ?)`,
+  ),
+  getTagByLabel: db.prepare(`SELECT id FROM tags WHERE label=?`),
+  addTag: db.prepare(
+    `INSERT OR IGNORE INTO inscrits_tags (inscrit_id,tag_id) VALUES (?,?)`,
+  ),
+  removeTag: db.prepare(
+    `DELETE FROM inscrits_tags WHERE inscrit_id=? AND tag_id=?`,
+  ),
+  insertHist: db.prepare(
+    `INSERT INTO historique (inscrit_id,action,detail,admin_ip) VALUES (?,?,?,?)`,
+  ),
+  getHist: db.prepare(
+    `SELECT * FROM historique WHERE inscrit_id=? ORDER BY created_at DESC LIMIT 50`,
+  ),
+  insertEmail: db.prepare(
+    `INSERT INTO emails_log (inscrit_id,destinataire,sujet,corps,statut,erreur) VALUES (?,?,?,?,?,?)`,
+  ),
+  getConfig: db.prepare(`SELECT cle, valeur FROM config`),
+  setConfig: db.prepare(
+    `UPDATE config SET valeur=?, updated_at=datetime('now') WHERE cle=?`,
+  ),
+  getAllPays: db.prepare(`SELECT * FROM pays_ref ORDER BY nom`),
+  statTotal: db.prepare(`SELECT COUNT(*) as n FROM inscrits`),
+  statPros: db.prepare(
+    `SELECT COUNT(*) as n FROM inscrits WHERE type_profil='pro'`,
+  ),
+  statClientes: db.prepare(
+    `SELECT COUNT(*) as n FROM inscrits WHERE type_profil='cliente'`,
+  ),
+  statNouveau: db.prepare(
+    `SELECT COUNT(*) as n FROM inscrits WHERE status='nouveau'`,
+  ),
+  statValides: db.prepare(
+    `SELECT COUNT(*) as n FROM inscrits WHERE status='validé'`,
+  ),
+  statParStatus: db.prepare(
+    `SELECT status, COUNT(*) as n FROM inscrits GROUP BY status ORDER BY n DESC`,
+  ),
+  statParPays: db.prepare(
+    `SELECT pays, COUNT(*) as n FROM inscrits WHERE pays IS NOT NULL GROUP BY pays ORDER BY n DESC LIMIT 15`,
+  ),
+  statParZone: db.prepare(
+    `SELECT pr.zone, COUNT(*) as n FROM inscrits i LEFT JOIN pays_ref pr ON pr.nom=i.pays WHERE pr.zone IS NOT NULL GROUP BY pr.zone ORDER BY n DESC`,
+  ),
+  statParJour: db.prepare(
+    `SELECT DATE(created_at) as date, COUNT(*) as n, SUM(CASE WHEN type_profil='pro' THEN 1 ELSE 0 END) as pros, SUM(CASE WHEN type_profil='cliente' THEN 1 ELSE 0 END) as clientes FROM inscrits GROUP BY DATE(created_at) ORDER BY date DESC LIMIT 60`,
+  ),
+  statSpec: db.prepare(
+    `SELECT value as specialite, COUNT(*) as n FROM inscrits, json_each(inscrits.specialite) WHERE type_profil='pro' AND specialite IS NOT NULL AND json_valid(specialite) GROUP BY value ORDER BY n DESC`,
+  ),
+  statCentres: db.prepare(
+    `SELECT value as label, COUNT(*) as n FROM inscrits, json_each(inscrits.centres_interet) WHERE type_profil='cliente' AND centres_interet IS NOT NULL GROUP BY value ORDER BY n DESC`,
+  ),
+  statSource: db.prepare(
+    `SELECT source, COUNT(*) as n FROM inscrits GROUP BY source ORDER BY n DESC`,
+  ),
+  statSemaine: db.prepare(
+    `SELECT COUNT(*) as n FROM inscrits WHERE created_at >= datetime('now','-7 days')`,
+  ),
+  statMois: db.prepare(
+    `SELECT COUNT(*) as n FROM inscrits WHERE created_at >= datetime('now','start of month')`,
+  ),
 };
 
 // ─────────────────────────────────────────────────
@@ -228,7 +293,12 @@ const queries = {
 const createInscrit = db.transaction((data) => {
   const result = queries.insert.run(data);
   const id = result.lastInsertRowid;
-  queries.insertHist.run(id, 'inscription', `Inscription via ${data.source||'landing_page'}`, data.ip_address);
+  queries.insertHist.run(
+    id,
+    "inscription",
+    `Inscription via ${data.source || "landing_page"}`,
+    data.ip_address,
+  );
 
   // Sync Turso (async non bloquant)
   setImmediate(async () => {
@@ -237,14 +307,25 @@ const createInscrit = db.transaction((data) => {
       await turso.execute({
         sql: `INSERT OR IGNORE INTO inscrits (uuid,nom,prenom,email,telephone,pays,ville,type_profil,specialite,centres_interet,status,source,ip_address,notes_admin,created_at)
               VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,null,datetime('now'))`,
-        args: [data.uuid,data.nom,data.prenom,data.email,
-               data.telephone||null,data.pays||null,data.ville||null,
-               data.type_profil,data.specialite||null,data.centres_interet||null,
-               'nouveau',data.source||'landing_page',data.ip_address||null]
+        args: [
+          data.uuid,
+          data.nom,
+          data.prenom,
+          data.email,
+          data.telephone || null,
+          data.pays || null,
+          data.ville || null,
+          data.type_profil,
+          data.specialite || null,
+          data.centres_interet || null,
+          "nouveau",
+          data.source || "landing_page",
+          data.ip_address || null,
+        ],
       });
-      console.log('[Turso] Inscrit sauvegardé:', data.email);
-    } catch(e) {
-      console.error('[Turso] Erreur sync:', e.message);
+      console.log("[Turso] Inscrit sauvegardé:", data.email);
+    } catch (e) {
+      console.error("[Turso] Erreur sync:", e.message);
     }
   });
 
@@ -253,51 +334,93 @@ const createInscrit = db.transaction((data) => {
 
 function parseInscrit(r) {
   const centres = (() => {
-    try { return (JSON.parse(r.centres_interet || '[]')).join(','); } catch { return ''; }
+    try {
+      return JSON.parse(r.centres_interet || "[]").join(",");
+    } catch {
+      return "";
+    }
   })();
-  return { ...r, centres, specialites_multi: r.specialite || '' };
+  const specialites_multi = (() => {
+    if (!r.specialite) return "";
+    try {
+      const p = JSON.parse(r.specialite);
+      return Array.isArray(p) ? p.join(",") : r.specialite;
+    } catch {
+      return r.specialite;
+    }
+  })();
+  return { ...r, centres, specialites_multi };
 }
 
-function getInscrits({ type, status, pays, search, page=1, limit=50 } = {}) {
-  let where = ['1=1'];
+function getInscrits({
+  type,
+  status,
+  pays,
+  search,
+  page = 1,
+  limit = 50,
+} = {}) {
+  let where = ["1=1"];
   const params = [];
-  if (type && type !== 'tous')     { where.push(`i.type_profil=?`); params.push(type); }
-  if (status && status !== 'tous') { where.push(`i.status=?`);      params.push(status); }
-  if (pays)                        { where.push(`i.pays=?`);         params.push(pays); }
-  if (search) {
-    where.push(`(i.nom LIKE ? OR i.prenom LIKE ? OR i.email LIKE ? OR i.ville LIKE ? OR i.telephone LIKE ?)`);
-    const s = `%${search}%`;
-    params.push(s,s,s,s,s);
+  if (type && type !== "tous") {
+    where.push(`i.type_profil=?`);
+    params.push(type);
   }
-  const w = where.join(' AND ');
-  const offset = (parseInt(page)-1)*parseInt(limit);
-  const total = db.prepare(`SELECT COUNT(DISTINCT i.id) as n FROM inscrits i WHERE ${w}`).get(...params).n;
-  const rows  = db.prepare(`
+  if (status && status !== "tous") {
+    where.push(`i.status=?`);
+    params.push(status);
+  }
+  if (pays) {
+    where.push(`i.pays=?`);
+    params.push(pays);
+  }
+  if (search) {
+    where.push(
+      `(i.nom LIKE ? OR i.prenom LIKE ? OR i.email LIKE ? OR i.ville LIKE ? OR i.telephone LIKE ?)`,
+    );
+    const s = `%${search}%`;
+    params.push(s, s, s, s, s);
+  }
+  const w = where.join(" AND ");
+  const offset = (parseInt(page) - 1) * parseInt(limit);
+  const total = db
+    .prepare(`SELECT COUNT(DISTINCT i.id) as n FROM inscrits i WHERE ${w}`)
+    .get(...params).n;
+  const rows = db
+    .prepare(
+      `
     SELECT i.*, GROUP_CONCAT(DISTINCT t.label) AS tags
     FROM inscrits i
     LEFT JOIN inscrits_tags it ON it.inscrit_id=i.id
     LEFT JOIN tags          t  ON t.id=it.tag_id
     WHERE ${w} GROUP BY i.id ORDER BY i.created_at DESC LIMIT ? OFFSET ?
-  `).all(...params, parseInt(limit), offset);
-  return { data: rows.map(parseInscrit), total, page: parseInt(page), pages: Math.ceil(total/parseInt(limit)) };
+  `,
+    )
+    .all(...params, parseInt(limit), offset);
+  return {
+    data: rows.map(parseInscrit),
+    total,
+    page: parseInt(page),
+    pages: Math.ceil(total / parseInt(limit)),
+  };
 }
 
 function getStats() {
   return {
-    total:         queries.statTotal.get().n,
-    pros:          queries.statPros.get().n,
-    clientes:      queries.statClientes.get().n,
-    nouveaux:      queries.statNouveau.get().n,
-    valides:       queries.statValides.get().n,
+    total: queries.statTotal.get().n,
+    pros: queries.statPros.get().n,
+    clientes: queries.statClientes.get().n,
+    nouveaux: queries.statNouveau.get().n,
+    valides: queries.statValides.get().n,
     cette_semaine: queries.statSemaine.get().n,
-    ce_mois:       queries.statMois.get().n,
-    par_status:    queries.statParStatus.all(),
-    par_pays:      queries.statParPays.all(),
-    par_zone:      queries.statParZone.all(),
-    par_jour:      queries.statParJour.all(),
-    specialites:   queries.statSpec.all(),
-    centres:       queries.statCentres.all(),
-    par_source:    queries.statSource.all(),
+    ce_mois: queries.statMois.get().n,
+    par_status: queries.statParStatus.all(),
+    par_pays: queries.statParPays.all(),
+    par_zone: queries.statParZone.all(),
+    par_jour: queries.statParJour.all(),
+    specialites: queries.statSpec.all(),
+    centres: queries.statCentres.all(),
+    par_source: queries.statSource.all(),
   };
 }
 
@@ -307,8 +430,8 @@ function getStats() {
 async function syncFromTurso() {
   if (!turso) return;
   try {
-    console.log('[Turso] Synchronisation au démarrage...');
-    const { rows: inscrits } = await turso.execute('SELECT * FROM inscrits');
+    console.log("[Turso] Synchronisation au démarrage...");
+    const { rows: inscrits } = await turso.execute("SELECT * FROM inscrits");
     if (inscrits.length > 0) {
       db.transaction(() => {
         const stmt = db.prepare(`
@@ -319,18 +442,40 @@ async function syncFromTurso() {
           VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
         `);
         for (const r of inscrits) {
-          stmt.run(r.id, r.uuid, r.nom, r.prenom, r.email,
-            r.telephone||null, r.pays||null, r.ville||null,
-            r.type_profil, r.specialite||null, r.centres_interet||null,
-            r.status||'nouveau', r.source||'landing_page',
-            r.ip_address||null, r.notes_admin||null, r.created_at);
+          stmt.run(
+            r.id,
+            r.uuid,
+            r.nom,
+            r.prenom,
+            r.email,
+            r.telephone || null,
+            r.pays || null,
+            r.ville || null,
+            r.type_profil,
+            r.specialite || null,
+            r.centres_interet || null,
+            r.status || "nouveau",
+            r.source || "landing_page",
+            r.ip_address || null,
+            r.notes_admin || null,
+            r.created_at,
+          );
         }
       })();
     }
     console.log(`[Turso] Sync OK — ${inscrits.length} inscrits chargés`);
-  } catch(e) {
-    console.error('[Turso] Erreur sync démarrage:', e.message);
+  } catch (e) {
+    console.error("[Turso] Erreur sync démarrage:", e.message);
   }
 }
 
-module.exports = { db, queries, createInscrit, getInscrits, getStats, DB_PATH, turso, syncFromTurso };
+module.exports = {
+  db,
+  queries,
+  createInscrit,
+  getInscrits,
+  getStats,
+  DB_PATH,
+  turso,
+  syncFromTurso,
+};

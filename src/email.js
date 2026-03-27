@@ -3,7 +3,7 @@
  * Nodemailer + templates HTML
  */
 
-const { queries } = require('./database');
+const { queries } = require("./database");
 
 let transporter = null;
 
@@ -12,26 +12,28 @@ let transporter = null;
  */
 function initTransporter() {
   try {
-    const nodemailer = require('nodemailer');
+    const nodemailer = require("nodemailer");
     const config = {};
-    queries.getConfig.all().forEach(r => { config[r.cle] = r.valeur; });
+    queries.getConfig.all().forEach((r) => {
+      config[r.cle] = r.valeur;
+    });
 
     if (!config.smtp_user || !config.smtp_pass) {
-      console.log('[Email] SMTP non configuré — emails désactivés');
+      console.log("[Email] SMTP non configuré — emails désactivés");
       return null;
     }
 
     transporter = nodemailer.createTransport({
-      host: config.smtp_host || 'smtp.gmail.com',
+      host: config.smtp_host || "smtp.gmail.com",
       port: parseInt(config.smtp_port) || 587,
       secure: false,
       auth: { user: config.smtp_user, pass: config.smtp_pass },
     });
 
-    console.log('[Email] SMTP initialisé:', config.smtp_host);
+    console.log("[Email] SMTP initialisé:", config.smtp_host);
     return transporter;
   } catch (e) {
-    console.error('[Email] Erreur init SMTP:', e.message);
+    console.error("[Email] Erreur init SMTP:", e.message);
     return null;
   }
 }
@@ -40,7 +42,7 @@ function initTransporter() {
  * Template email confirmation d'inscription
  */
 function templateConfirmation(inscrit) {
-  const estPro = inscrit.type_profil === 'pro';
+  const estPro = inscrit.type_profil === "pro";
   return {
     sujet: `Votre pré-inscription EdeneBeauty est confirmée ✨`,
     corps: `
@@ -72,7 +74,7 @@ function templateConfirmation(inscrit) {
               Bienvenue, ${inscrit.prenom} !
             </h1>
             <p style="color:#6B5C45;font-size:15px;line-height:1.7;margin:0 0 24px;">
-              Votre pré-inscription ${estPro ? 'en tant que professionnelle' : 'à la communauté EdeneBeauty'} 
+              Votre pré-inscription ${estPro ? "en tant que professionnelle" : "à la communauté EdeneBeauty"} 
               a bien été enregistrée. Nous sommes ravis de vous compter parmi les premières à découvrir 
               notre univers beauté.
             </p>
@@ -90,9 +92,9 @@ function templateConfirmation(inscrit) {
               <tr><td style="padding-top:12px;">
                 <p style="margin:4px 0;font-size:14px;color:#1A1208;"><strong>Nom :</strong> ${inscrit.prenom} ${inscrit.nom}</p>
                 <p style="margin:4px 0;font-size:14px;color:#1A1208;"><strong>Email :</strong> ${inscrit.email}</p>
-                <p style="margin:4px 0;font-size:14px;color:#1A1208;"><strong>Profil :</strong> ${estPro ? '💼 Professionnelle' : '✨ Future Cliente'}</p>
-                ${inscrit.pays ? `<p style="margin:4px 0;font-size:14px;color:#1A1208;"><strong>Localisation :</strong> ${[inscrit.ville, inscrit.pays].filter(Boolean).join(', ')}</p>` : ''}
-                ${estPro && inscrit.specialite ? `<p style="margin:4px 0;font-size:14px;color:#1A1208;"><strong>Spécialité :</strong> ${inscrit.specialite}</p>` : ''}
+                <p style="margin:4px 0;font-size:14px;color:#1A1208;"><strong>Profil :</strong> ${estPro ? "💼 Professionnelle" : "✨ Future Cliente"}</p>
+                ${inscrit.pays ? `<p style="margin:4px 0;font-size:14px;color:#1A1208;"><strong>Localisation :</strong> ${[inscrit.ville, inscrit.pays].filter(Boolean).join(", ")}</p>` : ""}
+                ${estPro && inscrit.specialite ? `<p style="margin:4px 0;font-size:14px;color:#1A1208;"><strong>Spécialité :</strong> ${inscrit.specialite}</p>` : ""}
               </td></tr>
             </table>
 
@@ -133,7 +135,7 @@ function templateConfirmation(inscrit) {
   </table>
 </body>
 </html>
-    `.trim()
+    `.trim(),
   };
 }
 
@@ -158,7 +160,7 @@ function templateWelcomePro(inscrit) {
           </h1>
           <p style="color:#6B5C45;font-size:15px;line-height:1.7;margin:0 0 20px;">
             Bonjour ${inscrit.prenom},<br><br>
-            En tant que <strong>${inscrit.specialite || 'professionnelle de la beauté'}</strong>, 
+            En tant que <strong>${inscrit.specialite || "professionnelle de la beauté"}</strong>, 
             vous aurez accès à des fonctionnalités exclusives sur EdeneBeauty : portfolio, 
             mise en relation clients, agenda, et bien plus encore.
           </p>
@@ -173,7 +175,7 @@ function templateWelcomePro(inscrit) {
     </td></tr>
   </table>
 </body></html>
-    `.trim()
+    `.trim(),
   };
 }
 
@@ -182,27 +184,50 @@ function templateWelcomePro(inscrit) {
  */
 async function sendEmail(inscritId, destinataire, sujet, corps) {
   const config = {};
-  queries.getConfig.all().forEach(r => { config[r.cle] = r.valeur; });
+  queries.getConfig.all().forEach((r) => {
+    config[r.cle] = r.valeur;
+  });
 
   if (!transporter) transporter = initTransporter();
 
   if (!transporter) {
     // Logger sans envoyer
-    queries.insertEmailLog.run(inscritId, destinataire, sujet, corps, 'en_attente', 'SMTP non configuré');
-    return { success: false, reason: 'SMTP non configuré' };
+    queries.insertEmailLog.run(
+      inscritId,
+      destinataire,
+      sujet,
+      corps,
+      "en_attente",
+      "SMTP non configuré",
+    );
+    return { success: false, reason: "SMTP non configuré" };
   }
 
   try {
     await transporter.sendMail({
-      from: config.email_from || 'EdeneBeauty <noreply@edenebeauty.com>',
+      from: config.email_from || "EdeneBeauty <noreply@edenebeauty.com>",
       to: destinataire,
       subject: sujet,
       html: corps,
     });
-    queries.insertEmailLog.run(inscritId, destinataire, sujet, corps, 'envoyé', null);
+    queries.insertEmailLog.run(
+      inscritId,
+      destinataire,
+      sujet,
+      corps,
+      "envoyé",
+      null,
+    );
     return { success: true };
   } catch (err) {
-    queries.insertEmailLog.run(inscritId, destinataire, sujet, corps, 'erreur', err.message);
+    queries.insertEmailLog.run(
+      inscritId,
+      destinataire,
+      sujet,
+      corps,
+      "erreur",
+      err.message,
+    );
     return { success: false, reason: err.message };
   }
 }
@@ -212,8 +237,10 @@ async function sendEmail(inscritId, destinataire, sujet, corps) {
  */
 async function sendConfirmation(inscrit) {
   const config = {};
-  queries.getConfig.all().forEach(r => { config[r.cle] = r.valeur; });
-  if (config.email_confirmation_active !== '1') return;
+  queries.getConfig.all().forEach((r) => {
+    config[r.cle] = r.valeur;
+  });
+  if (config.email_confirmation_active !== "1") return;
 
   const tpl = templateConfirmation(inscrit);
   return sendEmail(inscrit.id, inscrit.email, tpl.sujet, tpl.corps);

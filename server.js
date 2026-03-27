@@ -260,7 +260,9 @@ app.post('/api/register', validateInscription, async (req, res) => {
       pays: pays || null,
       ville: ville || null,
       type_profil,
-      specialite: type_profil === 'pro' ? (specialite || null) : null,
+      specialite: type_profil === 'pro'
+        ? (Array.isArray(specialite) ? JSON.stringify(specialite) : (specialite || null))
+        : null,
       centres_interet: type_profil === 'cliente'
         ? JSON.stringify(Array.isArray(centres_interet) ? centres_interet : [])
         : null,

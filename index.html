@@ -87,47 +87,7 @@
             },
         }
 </script>
-<style>
-  body { font-family: 'Manrope', sans-serif; }
-  .glass-effect { background: rgba(255,255,255,0.7); backdrop-filter: blur(10px); }
-  .social-card-overlay { background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 40%); }
-  .masonry-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); grid-auto-rows:10px; gap:24px; }
-  .masonry-item { grid-row-end:span 45; }
-  .masonry-item.tall { grid-row-end:span 60; }
-  .masonry-item.short { grid-row-end:span 35; }
-
-  /* ── FORMULAIRE ── */
-  .eb-tab-on  { background:#1d2a67 !important; color:#fff !important; box-shadow:0 4px 15px rgba(29,42,103,0.3); }
-  .eb-tab-off { background:transparent !important; color:#94a3b8 !important; }
-  .eb-tab-off:hover { color:#1d2a67 !important; }
-  .eb-chip {
-    display:inline-block; padding:8px 18px; border-radius:9999px;
-    border:1.5px solid rgba(29,42,103,0.2); background:#fff; color:#1d2a67;
-    font-size:13px; font-weight:600; cursor:pointer; transition:all 0.18s;
-    user-select:none; font-family:'Manrope',sans-serif;
-  }
-  .eb-chip.on { background:#1d2a67 !important; color:#fff !important; border-color:#1d2a67 !important; }
-  .eb-chip:hover:not(.on) { border-color:#1d2a67; background:rgba(29,42,103,0.04); }
-  .eb-input {
-    width:100%; border:1.5px solid #e2e8f0; border-radius:0.75rem;
-    padding:12px 16px; font-size:14px; font-family:'Manrope',sans-serif;
-    outline:none; color:#0f172a; background:#fff;
-    transition:border-color 0.2s,box-shadow 0.2s; box-sizing:border-box;
-  }
-  .eb-input:focus { border-color:#1d2a67; box-shadow:0 0 0 3px rgba(29,42,103,0.1); }
-  .eb-error {
-    background:#fef2f2; border:1px solid #fecaca; color:#dc2626;
-    border-radius:0.75rem; padding:10px 14px; font-size:13px;
-    margin-bottom:16px; display:none;
-  }
-  .eb-spinner {
-    width:18px; height:18px; border:2px solid rgba(255,255,255,0.4);
-    border-top-color:#fff; border-radius:50%;
-    animation:eb-spin 0.7s linear infinite; display:none;
-  }
-  .eb-spinner.show { display:inline-block; }
-  @keyframes eb-spin { to { transform:rotate(360deg); } }
-</style>
+<link rel="stylesheet" href="/styles/index.css">
 </head>
 <body class="text-slate-900 dark:text-slate-100 transition-colors duration-300" style="background-color:#FAF3EB;">
 <div class="relative flex h-auto min-h-screen w-full flex-col">
@@ -343,16 +303,21 @@
     <!-- SECTION PRO -->
     <div id="eb-section-pro" style="display:none" class="mb-8">
       <div class="flex flex-col gap-2">
-        <label class="text-sm font-bold px-1">Spécialité</label>
-        <select class="eb-input" id="eb-specialite">
-          <option value="">Sélectionner votre métier...</option>
-          <option>Coiffure</option><option>Coiffure afro &amp; texturée</option>
-          <option>Maquillage</option><option>Esthétique</option>
-          <option>Soins de la peau</option><option>Nail Art &amp; Ongles</option>
-          <option>Barbier</option><option>Microblading &amp; Sourcils</option>
-          <option>Extensions de cils</option><option>Soins capillaires</option>
-          <option>Massage &amp; Bien-être</option><option>Autre</option>
-        </select>
+        <label class="text-sm font-bold px-1">Spécialités / Centres d'intérêt</label>
+        <div class="eb-spec-list" id="eb-spec-list">
+          <div class="eb-spec-item" onclick="ebSpecToggle(this)" data-val="Maquillage"><div class="eb-spec-circle"></div>Maquillage</div>
+          <div class="eb-spec-item" onclick="ebSpecToggle(this)" data-val="Coiffure"><div class="eb-spec-circle"></div>Coiffure</div>
+          <div class="eb-spec-item" onclick="ebSpecToggle(this)" data-val="Coiffure afro & texturée"><div class="eb-spec-circle"></div>Coiffure afro &amp; texturée</div>
+          <div class="eb-spec-item" onclick="ebSpecToggle(this)" data-val="Soins de la peau"><div class="eb-spec-circle"></div>Soins de la peau</div>
+          <div class="eb-spec-item" onclick="ebSpecToggle(this)" data-val="Nail Art & Ongles"><div class="eb-spec-circle"></div>Nail Art &amp; Ongles</div>
+          <div class="eb-spec-item" onclick="ebSpecToggle(this)" data-val="Épilation"><div class="eb-spec-circle"></div>Épilation</div>
+          <div class="eb-spec-item" onclick="ebSpecToggle(this)" data-val="Massage & Bien-être"><div class="eb-spec-circle"></div>Massage &amp; Bien-être</div>
+          <div class="eb-spec-item" onclick="ebSpecToggle(this)" data-val="Microblading & Sourcils"><div class="eb-spec-circle"></div>Microblading &amp; Sourcils</div>
+          <div class="eb-spec-item" onclick="ebSpecToggle(this)" data-val="Extensions de cils"><div class="eb-spec-circle"></div>Extensions de cils</div>
+          <div class="eb-spec-item" onclick="ebSpecToggle(this)" data-val="Barbier"><div class="eb-spec-circle"></div>Barbier</div>
+          <div class="eb-spec-item" onclick="ebSpecToggle(this)" data-val="Autre"><div class="eb-spec-circle"></div>Autre</div>
+          <div class="eb-spec-all" id="eb-spec-all" onclick="ebSpecAll()"><div class="eb-spec-all-circle"></div>Avis / Tout sélectionner</div>
+        </div>
       </div>
     </div>
 
@@ -427,6 +392,23 @@
 (function() {
   var ebTab = 'cliente';
 
+  window.ebSpecToggle = function(el) {
+    el.classList.toggle('on');
+    var all = document.querySelectorAll('#eb-spec-list .eb-spec-item');
+    var on  = document.querySelectorAll('#eb-spec-list .eb-spec-item.on');
+    var btn = document.getElementById('eb-spec-all');
+    if (on.length === all.length) btn.classList.add('all-on');
+    else btn.classList.remove('all-on');
+  };
+
+  window.ebSpecAll = function() {
+    var items = document.querySelectorAll('#eb-spec-list .eb-spec-item');
+    var btn   = document.getElementById('eb-spec-all');
+    var allOn = btn.classList.contains('all-on');
+    items.forEach(function(el) { allOn ? el.classList.remove('on') : el.classList.add('on'); });
+    allOn ? btn.classList.remove('all-on') : btn.classList.add('all-on');
+  };
+
   window.ebSwitch = function(t) {
     ebTab = t;
     document.getElementById('eb-tab-cliente').className = t === 'cliente'
@@ -464,9 +446,9 @@
     var body = { nom:nom, prenom:prenom, email:email, telephone:tel||null, pays:pays||null, ville:ville||null, type_profil:ebTab, source:'landing_page' };
 
     if (ebTab === 'pro') {
-      var spec = document.getElementById('eb-specialite').value;
-      if (!spec) return showErr('Veuillez sélectionner votre spécialité.');
-      body.specialite = spec;
+      var specs = Array.from(document.querySelectorAll('#eb-spec-list .eb-spec-item.on')).map(function(c){ return c.dataset.val; });
+      if (!specs.length) return showErr('Veuillez sélectionner au moins une spécialité.');
+      body.specialite = specs;
     } else {
       body.centres_interet = Array.from(document.querySelectorAll('#eb-chips .eb-chip.on')).map(function(c){ return c.textContent.trim(); });
     }

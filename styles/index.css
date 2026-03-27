@@ -1,0 +1,201 @@
+body {
+  font-family: "Manrope", sans-serif;
+}
+.glass-effect {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+}
+.social-card-overlay {
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.8) 0%,
+    rgba(0, 0, 0, 0) 40%
+  );
+}
+.masonry-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-auto-rows: 10px;
+  gap: 24px;
+}
+.masonry-item {
+  grid-row-end: span 45;
+}
+.masonry-item.tall {
+  grid-row-end: span 60;
+}
+.masonry-item.short {
+  grid-row-end: span 35;
+}
+
+/* ── FORMULAIRE ── */
+.eb-tab-on {
+  background: #1d2a67 !important;
+  color: #fff !important;
+  box-shadow: 0 4px 15px rgba(29, 42, 103, 0.3);
+}
+.eb-tab-off {
+  background: transparent !important;
+  color: #94a3b8 !important;
+}
+.eb-tab-off:hover {
+  color: #1d2a67 !important;
+}
+.eb-chip {
+  display: inline-block;
+  padding: 8px 18px;
+  border-radius: 9999px;
+  border: 1.5px solid rgba(29, 42, 103, 0.2);
+  background: #fff;
+  color: #1d2a67;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s;
+  user-select: none;
+  font-family: "Manrope", sans-serif;
+}
+.eb-chip.on {
+  background: #1d2a67 !important;
+  color: #fff !important;
+  border-color: #1d2a67 !important;
+}
+.eb-chip:hover:not(.on) {
+  border-color: #1d2a67;
+  background: rgba(29, 42, 103, 0.04);
+}
+.eb-spec-list {
+  border: 1.5px solid #e2e8f0;
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+.eb-spec-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid #f1f5f9;
+  cursor: pointer;
+  transition: background 0.15s;
+  font-size: 14px;
+  font-family: "Manrope", sans-serif;
+  color: #0f172a;
+  user-select: none;
+}
+.eb-spec-item:last-child {
+  border-bottom: none;
+}
+.eb-spec-item:hover:not(.on) {
+  background: #f8fafc;
+}
+.eb-spec-item.on {
+  background: rgba(29, 42, 103, 0.04);
+}
+.eb-spec-circle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #cbd5e1;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+.eb-spec-item.on .eb-spec-circle {
+  background: #1d2a67;
+  border-color: #1d2a67;
+}
+.eb-spec-item.on .eb-spec-circle::after {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #fff;
+  display: block;
+}
+.eb-spec-all {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: #1d2a67;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: "Manrope", sans-serif;
+  color: #fff;
+  user-select: none;
+  transition: opacity 0.15s;
+}
+.eb-spec-all:hover {
+  opacity: 0.88;
+}
+.eb-spec-all-circle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.eb-spec-all.all-on .eb-spec-all-circle {
+  background: #fff;
+  border-color: #fff;
+}
+.eb-spec-all.all-on .eb-spec-all-circle::after {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #1d2a67;
+  display: block;
+}
+.eb-input {
+  width: 100%;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 0.75rem;
+  padding: 12px 16px;
+  font-size: 14px;
+  font-family: "Manrope", sans-serif;
+  outline: none;
+  color: #0f172a;
+  background: #fff;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+  box-sizing: border-box;
+}
+.eb-input:focus {
+  border-color: #1d2a67;
+  box-shadow: 0 0 0 3px rgba(29, 42, 103, 0.1);
+}
+.eb-error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  border-radius: 0.75rem;
+  padding: 10px 14px;
+  font-size: 13px;
+  margin-bottom: 16px;
+  display: none;
+}
+.eb-spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: eb-spin 0.7s linear infinite;
+  display: none;
+}
+.eb-spinner.show {
+  display: inline-block;
+}
+@keyframes eb-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
