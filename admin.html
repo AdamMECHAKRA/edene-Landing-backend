@@ -25,18 +25,21 @@
 </div>
 <script>
 (function(){
-  var PWD = 'Servicit2025%';
-  if(sessionStorage.getItem('eb-admin-auth')==='1'){
+  if(sessionStorage.getItem('eb-admin-token')){
     document.addEventListener('DOMContentLoaded',function(){ document.getElementById('login-screen').style.display='none'; });
   }
-  window.doLogin = function(){
+  window.doLogin = async function(){
     var v = document.getElementById('login-pwd').value;
-    if(v === PWD){
-      sessionStorage.setItem('eb-admin-auth','1');
+    var e = document.getElementById('login-error');
+    e.style.display='none';
+    try {
+      var r = await fetch('/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:v})});
+      var data = await r.json();
+      if(!r.ok) throw new Error(data.error||'Erreur');
+      sessionStorage.setItem('eb-admin-token', data.token);
       document.getElementById('login-screen').style.display='none';
-    } else {
-      var e = document.getElementById('login-error');
-      e.textContent='Mot de passe incorrect.';
+    } catch(err) {
+      e.textContent = err.message;
       e.style.display='block';
       document.getElementById('login-pwd').value='';
     }
@@ -530,9 +533,11 @@ function exportCSV(type){
 }
 
 async function apiFetch(path,method='GET',body=null){
-  const opts={method,headers:{'Content-Type':'application/json'}};
+  const token=sessionStorage.getItem('eb-admin-token')||'';
+  const opts={method,headers:{'Content-Type':'application/json','Authorization':'Bearer '+token}};
   if(body)opts.body=JSON.stringify(body);
   const r=await fetch(API+path,opts);
+  if(r.status===401){sessionStorage.removeItem('eb-admin-token');location.reload();return;}
   if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error(e.error||'API error');}
   return r.json();
 }

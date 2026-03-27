@@ -34,6 +34,7 @@ const cors        = require('cors');
 const helmet      = require('helmet');
 const morgan      = require('morgan');
 const path        = require('path');
+const crypto      = require('crypto');
 const { v4: uuidv4 } = require('uuid');
 
 const { db, queries, createInscrit, getInscrits, getStats, DB_PATH, turso, syncFromTurso } = require('./src/database');
@@ -207,8 +208,49 @@ function getIP(req) {
 }
 
 // ─────────────────────────────────────────────────
+// AUTHENTIFICATION ADMIN
+// ─────────────────────────────────────────────────
+function makeToken(password) {
+  const secret = process.env.ADMIN_SECRET;
+  return crypto.createHmac('sha256', secret).update(password).digest('hex');
+}
+
+function adminAuth(req, res, next) {
+  const auth  = req.headers['authorization'] || '';
+  const token = auth.replace('Bearer ', '').trim();
+  const validToken = makeToken(process.env.ADMIN_PASSWORD);
+  if (!token || token !== validToken) {
+    return res.status(401).json({ error: 'Non autorisé.' });
+  }
+  next();
+}
+
+// ─────────────────────────────────────────────────
 // ROUTES
 // ─────────────────────────────────────────────────
+
+// Routes publiques (pas besoin de token)
+const PUBLIC_API = new Set([
+  'POST:/api/auth/login',
+  'POST:/api/register',
+  'GET:/api/health',
+  'GET:/api/pays',
+  'GET:/api/referentiel',
+]);
+app.use('/api', (req, res, next) => {
+  if (PUBLIC_API.has(`${req.method}:/api${req.path}`)) return next();
+  adminAuth(req, res, next);
+});
+
+// ── LOGIN ADMIN ───────────────────────────────────
+app.post('/api/auth/login', (req, res) => {
+  const { password } = req.body;
+  const adminPassword = process.env.ADMIN_PASSWORD || 'Servicit2025%';
+  if (!password || password !== adminPassword) {
+    return res.status(401).json({ error: 'Mot de passe incorrect.' });
+  }
+  res.json({ token: makeToken(adminPassword) });
+});
 
 // ── HEALTH CHECK ──────────────────────────────────
 app.get('/api/health', (req, res) => {

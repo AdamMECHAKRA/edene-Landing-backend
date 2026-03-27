@@ -303,21 +303,27 @@
     <!-- SECTION PRO -->
     <div id="eb-section-pro" style="display:none" class="mb-8">
       <div class="flex flex-col gap-2">
-        <label class="text-sm font-bold px-1">Spécialités / Centres d'intérêt</label>
-        <div class="eb-spec-list" id="eb-spec-list">
-          <div class="eb-spec-item" onclick="ebSpecToggle(this)" data-val="Maquillage"><div class="eb-spec-circle"></div>Maquillage</div>
-          <div class="eb-spec-item" onclick="ebSpecToggle(this)" data-val="Coiffure"><div class="eb-spec-circle"></div>Coiffure</div>
-          <div class="eb-spec-item" onclick="ebSpecToggle(this)" data-val="Coiffure afro & texturée"><div class="eb-spec-circle"></div>Coiffure afro &amp; texturée</div>
-          <div class="eb-spec-item" onclick="ebSpecToggle(this)" data-val="Soins de la peau"><div class="eb-spec-circle"></div>Soins de la peau</div>
-          <div class="eb-spec-item" onclick="ebSpecToggle(this)" data-val="Nail Art & Ongles"><div class="eb-spec-circle"></div>Nail Art &amp; Ongles</div>
-          <div class="eb-spec-item" onclick="ebSpecToggle(this)" data-val="Épilation"><div class="eb-spec-circle"></div>Épilation</div>
-          <div class="eb-spec-item" onclick="ebSpecToggle(this)" data-val="Massage & Bien-être"><div class="eb-spec-circle"></div>Massage &amp; Bien-être</div>
-          <div class="eb-spec-item" onclick="ebSpecToggle(this)" data-val="Microblading & Sourcils"><div class="eb-spec-circle"></div>Microblading &amp; Sourcils</div>
-          <div class="eb-spec-item" onclick="ebSpecToggle(this)" data-val="Extensions de cils"><div class="eb-spec-circle"></div>Extensions de cils</div>
-          <div class="eb-spec-item" onclick="ebSpecToggle(this)" data-val="Barbier"><div class="eb-spec-circle"></div>Barbier</div>
-          <div class="eb-spec-item" onclick="ebSpecToggle(this)" data-val="Autre"><div class="eb-spec-circle"></div>Autre</div>
-          <div class="eb-spec-all" id="eb-spec-all" onclick="ebSpecAll()"><div class="eb-spec-all-circle"></div>Avis / Tout sélectionner</div>
+        <label class="text-sm font-bold px-1">Spécialités</label>
+        <div class="eb-mselect" id="eb-mselect">
+          <div class="eb-mselect-trigger" id="eb-mselect-trigger" onclick="ebMsToggle()">
+            <span id="eb-mselect-label">Sélectionner vos spécialités...</span>
+            <span class="eb-mselect-arrow">▾</span>
+          </div>
+          <div class="eb-mselect-dropdown" id="eb-mselect-dropdown">
+            <div class="eb-mselect-item" onclick="ebMsCheck(this)" data-val="Maquillage"><span class="eb-ms-box"></span>Maquillage</div>
+            <div class="eb-mselect-item" onclick="ebMsCheck(this)" data-val="Coiffure"><span class="eb-ms-box"></span>Coiffure</div>
+            <div class="eb-mselect-item" onclick="ebMsCheck(this)" data-val="Coiffure afro & texturée"><span class="eb-ms-box"></span>Coiffure afro &amp; texturée</div>
+            <div class="eb-mselect-item" onclick="ebMsCheck(this)" data-val="Soins de la peau"><span class="eb-ms-box"></span>Soins de la peau</div>
+            <div class="eb-mselect-item" onclick="ebMsCheck(this)" data-val="Nail Art & Ongles"><span class="eb-ms-box"></span>Nail Art &amp; Ongles</div>
+            <div class="eb-mselect-item" onclick="ebMsCheck(this)" data-val="Épilation"><span class="eb-ms-box"></span>Épilation</div>
+            <div class="eb-mselect-item" onclick="ebMsCheck(this)" data-val="Massage & Bien-être"><span class="eb-ms-box"></span>Massage &amp; Bien-être</div>
+            <div class="eb-mselect-item" onclick="ebMsCheck(this)" data-val="Microblading & Sourcils"><span class="eb-ms-box"></span>Microblading &amp; Sourcils</div>
+            <div class="eb-mselect-item" onclick="ebMsCheck(this)" data-val="Extensions de cils"><span class="eb-ms-box"></span>Extensions de cils</div>
+            <div class="eb-mselect-item" onclick="ebMsCheck(this)" data-val="Barbier"><span class="eb-ms-box"></span>Barbier</div>
+            <div class="eb-mselect-item" onclick="ebMsCheck(this)" data-val="Autre"><span class="eb-ms-box"></span>Autre</div>
+          </div>
         </div>
+        <input class="eb-input" id="eb-spec-autre" type="text" placeholder="Précisez votre spécialité..." style="display:none;margin-top:8px;">
       </div>
     </div>
 
@@ -392,22 +398,38 @@
 (function() {
   var ebTab = 'cliente';
 
-  window.ebSpecToggle = function(el) {
-    el.classList.toggle('on');
-    var all = document.querySelectorAll('#eb-spec-list .eb-spec-item');
-    var on  = document.querySelectorAll('#eb-spec-list .eb-spec-item.on');
-    var btn = document.getElementById('eb-spec-all');
-    if (on.length === all.length) btn.classList.add('all-on');
-    else btn.classList.remove('all-on');
+  // ── Multi-select spécialités pro ──
+  function ebMsUpdateLabel() {
+    var selected = Array.from(document.querySelectorAll('#eb-mselect-dropdown .eb-mselect-item.on'))
+      .map(function(el) { return el.dataset.val === 'Autre' ? (document.getElementById('eb-spec-autre').value.trim() || 'Autre') : el.dataset.val; });
+    var lbl = document.getElementById('eb-mselect-label');
+    lbl.textContent = selected.length ? selected.join(', ') : 'Sélectionner vos spécialités...';
+    lbl.style.color = selected.length ? '#0f172a' : '';
+  }
+
+  window.ebMsToggle = function() {
+    var dd = document.getElementById('eb-mselect-dropdown');
+    dd.classList.toggle('open');
   };
 
-  window.ebSpecAll = function() {
-    var items = document.querySelectorAll('#eb-spec-list .eb-spec-item');
-    var btn   = document.getElementById('eb-spec-all');
-    var allOn = btn.classList.contains('all-on');
-    items.forEach(function(el) { allOn ? el.classList.remove('on') : el.classList.add('on'); });
-    allOn ? btn.classList.remove('all-on') : btn.classList.add('all-on');
+  window.ebMsCheck = function(el) {
+    el.classList.toggle('on');
+    var isAutre = el.dataset.val === 'Autre';
+    var autreInput = document.getElementById('eb-spec-autre');
+    if (isAutre) {
+      autreInput.style.display = el.classList.contains('on') ? 'block' : 'none';
+      if (!el.classList.contains('on')) autreInput.value = '';
+    }
+    ebMsUpdateLabel();
   };
+
+  document.getElementById('eb-spec-autre') && document.getElementById('eb-spec-autre').addEventListener('input', ebMsUpdateLabel);
+
+  // Fermer le dropdown si clic en dehors
+  document.addEventListener('click', function(e) {
+    var ms = document.getElementById('eb-mselect');
+    if (ms && !ms.contains(e.target)) document.getElementById('eb-mselect-dropdown').classList.remove('open');
+  });
 
   window.ebSwitch = function(t) {
     ebTab = t;
@@ -446,7 +468,12 @@
     var body = { nom:nom, prenom:prenom, email:email, telephone:tel||null, pays:pays||null, ville:ville||null, type_profil:ebTab, source:'landing_page' };
 
     if (ebTab === 'pro') {
-      var specs = Array.from(document.querySelectorAll('#eb-spec-list .eb-spec-item.on')).map(function(c){ return c.dataset.val; });
+      var autreChecked = document.querySelector('#eb-mselect-dropdown .eb-mselect-item.on[data-val="Autre"]');
+      var autreVal = document.getElementById('eb-spec-autre').value.trim();
+      if (autreChecked && !autreVal) return showErr('Veuillez préciser votre spécialité "Autre".');
+      var specs = Array.from(document.querySelectorAll('#eb-mselect-dropdown .eb-mselect-item.on')).map(function(el) {
+        return el.dataset.val === 'Autre' ? autreVal : el.dataset.val;
+      });
       if (!specs.length) return showErr('Veuillez sélectionner au moins une spécialité.');
       body.specialite = specs;
     } else {

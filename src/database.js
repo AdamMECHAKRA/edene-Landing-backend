@@ -141,6 +141,17 @@ db.exec(`
     BEGIN UPDATE inscrits SET updated_at = datetime('now') WHERE id = NEW.id; END;
 `);
 
+// ── Migrations : ajout des colonnes si elles n'existent pas
+const existingCols = db.pragma("table_info(inscrits)").map((c) => c.name);
+if (!existingCols.includes("centres_interet")) {
+  db.exec(`ALTER TABLE inscrits ADD COLUMN centres_interet TEXT`);
+  console.log("[DB] Migration: colonne centres_interet ajoutée");
+}
+if (!existingCols.includes("notes_admin")) {
+  db.exec(`ALTER TABLE inscrits ADD COLUMN notes_admin TEXT`);
+  console.log("[DB] Migration: colonne notes_admin ajoutée");
+}
+
 // ─────────────────────────────────────────────────
 // DONNÉES DE RÉFÉRENCE
 // ─────────────────────────────────────────────────

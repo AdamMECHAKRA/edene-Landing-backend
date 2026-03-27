@@ -199,3 +199,118 @@ body {
     transform: rotate(360deg);
   }
 }
+
+/* ── MULTI-SELECT DROPDOWN ── */
+.eb-mselect {
+  position: relative;
+  width: 100%;
+  font-family: "Manrope", sans-serif;
+}
+.eb-mselect-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 0.75rem;
+  padding: 12px 16px;
+  font-size: 14px;
+  color: #0f172a;
+  background: #fff;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+  user-select: none;
+}
+.eb-mselect-trigger:hover {
+  border-color: #1d2a67;
+}
+.eb-mselect.open .eb-mselect-trigger {
+  border-color: #1d2a67;
+  box-shadow: 0 0 0 3px rgba(29, 42, 103, 0.1);
+}
+.eb-mselect-arrow {
+  font-size: 12px;
+  color: #94a3b8;
+  transition: transform 0.2s;
+  flex-shrink: 0;
+  margin-left: 8px;
+}
+.eb-mselect.open .eb-mselect-arrow {
+  transform: rotate(180deg);
+}
+#eb-mselect-label {
+  color: #94a3b8;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#eb-mselect-label.has-value {
+  color: #0f172a;
+}
+.eb-mselect-dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  z-index: 100;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  max-height: 260px;
+  overflow-y: auto;
+}
+.eb-mselect-dropdown.open {
+  display: block;
+}
+.eb-mselect-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 16px;
+  font-size: 14px;
+  color: #0f172a;
+  cursor: pointer;
+  transition: background 0.15s;
+  border-bottom: 1px solid #f1f5f9;
+  user-select: none;
+}
+.eb-mselect-item:last-child {
+  border-bottom: none;
+}
+.eb-mselect-item:hover {
+  background: #f8fafc;
+}
+.eb-mselect-item.on {
+  background: rgba(29, 42, 103, 0.04);
+}
+.eb-ms-box {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  border: 2px solid #cbd5e1;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  background: #fff;
+}
+.eb-mselect-item.on .eb-ms-box {
+  background: #1d2a67;
+  border-color: #1d2a67;
+}
+.eb-mselect-item.on .eb-ms-box::after {
+  content: "";
+  width: 5px;
+  height: 9px;
+  border: 2px solid #fff;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg) translateY(-1px);
+  display: block;
+}
