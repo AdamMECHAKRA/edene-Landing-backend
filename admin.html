@@ -38,6 +38,7 @@
       if(!r.ok) throw new Error(data.error||'Erreur');
       sessionStorage.setItem('eb-admin-token', data.token);
       document.getElementById('login-screen').style.display='none';
+      refreshAll();
     } catch(err) {
       e.textContent = err.message;
       e.style.display='block';
@@ -534,10 +535,11 @@ function exportCSV(type){
 
 async function apiFetch(path,method='GET',body=null){
   const token=sessionStorage.getItem('eb-admin-token')||'';
+  if(!token){document.getElementById('login-screen').style.display='flex';return;}
   const opts={method,headers:{'Content-Type':'application/json','Authorization':'Bearer '+token}};
   if(body)opts.body=JSON.stringify(body);
   const r=await fetch(API+path,opts);
-  if(r.status===401){sessionStorage.removeItem('eb-admin-token');location.reload();return;}
+  if(r.status===401){sessionStorage.removeItem('eb-admin-token');document.getElementById('login-screen').style.display='flex';return;}
   if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error(e.error||'API error');}
   return r.json();
 }
